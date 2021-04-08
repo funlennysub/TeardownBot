@@ -1,14 +1,14 @@
 {
-  "name": "untitled",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "teardown-bot",
+  "version": "0.1.0",
+  "description": "Discord bot for the official Teardown server",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "funlennysub",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "chalk": "^4.1.0",
     "eris": "github:abalabahaha/eris#dev",
