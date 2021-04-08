@@ -1,20 +1,6 @@
-import { Client } from 'eris'
-import { config } from 'dotenv'
+import Bot from './Bot'
 
-config()
+const bot = Bot.initialize()
+bot.start()
 
-const bot = new Client(
-  process.env.bot_token!,
-  {
-    intents: [
-      'guilds',
-      'guildMembers',
-      'guildMessages',
-      'guildIntegrations',
-      'guildMessageReactions',
-    ],
-    getAllUsers: true,
-    allowedMentions: { users: false, roles: false, everyone: false, repliedUser: false }
-  },
-)
-
+export default bot
