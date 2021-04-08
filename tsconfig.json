@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "strictPropertyInitialization": true,
+    "esModuleInterop": true,
+    "noEmitOnError": false,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "allowUnreachableCode": false,
+    "allowJs": false,
+    "lib": [
+      "es2020"
+    ],
+    "module": "commonjs",
+    "target": "es2020",
+    "moduleResolution": "node",
+    "outDir": "./out",
+    "rootDir": "./src"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
