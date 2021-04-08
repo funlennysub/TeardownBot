@@ -1,10 +1,13 @@
 {
   "name": "teardown-bot",
   "version": "0.1.0",
+  "homepage": "https://discord.gg/ZwzUtzWcqj",
   "description": "Discord bot for the official Teardown server",
   "main": "src/index.js",
   "scripts": {
-
+    "build": "tsc",
+    "start": "node out/index.js",
+    "dev": "tsc-watch --project tsconfig.json --onSuccess \"pnpm run start\""
   },
   "keywords": [],
   "author": "funlennysub",
@@ -12,11 +15,14 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "eris": "github:abalabahaha/eris#dev",
-    "mongodb": "^3.6.6"
+    "mongodb": "^3.6.6",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@types/mongodb": "^3.6.12",
     "@types/node": "^14.14.37",
-    "dotenv": "^8.2.0"
+    "@types/node-fetch": "^2.5.10",
+    "dotenv": "^8.2.0",
+    "tsc-watch": "^4.2.9"
   }
 }
