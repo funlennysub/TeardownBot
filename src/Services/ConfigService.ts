@@ -1,14 +1,17 @@
-import { writeFileSync, readFileSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
 
 export interface IConfig {
-  applicationId: string;
+  applicationId: string,
   guild: string,
+  queueChannel: string,
   owners: Array<string>
   mongodb: {
-    base_col: string,
-    uri: string
-  }
+    db: string,
+    tagsCollection: string,
+    queueCollection: string,
+    uri: string,
+  },
 }
 
 class ConfigService {

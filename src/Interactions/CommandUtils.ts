@@ -3,7 +3,7 @@ import Bot from '../Bot'
 import ICommandData from './types/ICommandData'
 
 namespace CommandUtils {
-  export async function getGuildCommands(guild: string, applicationId: string): Promise<{ name: string; id: string }[]> {
+  export async function getGuildCommands(guild: string, applicationId: string): Promise<Array<{ name: string; id: string }>> {
     const request = await fetch('https://discord.com/api/v8/applications/' + applicationId + '/guilds/' + guild + '/commands', {
       method: 'get',
       headers: {

@@ -1,17 +1,16 @@
-import { Client } from 'eris'
 import { config } from 'dotenv'
-import Logger from './Logger/Logger'
-import { MongoClient } from 'mongodb'
-import IInteraction from './Interactions/Types/IInteraction'
-import Interaction from './Interactions/Interaction'
-import ConfigService from './Services/ConfigService'
-import CommandHandler from './CommandHandler'
-import InteractionType from './Interactions/Types/InteractionType'
-import InteractionResponseType from './Interactions/Types/InteractionResponseType'
-import CommandType from './Interactions/Types/CommandType'
+import { Client } from 'eris'
 import { readdirSync } from 'fs'
-
 import { basename, join } from 'path'
+import Interaction from './Interactions/Interaction'
+import CommandType from './Interactions/Types/CommandType'
+import IInteraction from './Interactions/Types/IInteraction'
+import InteractionResponseType from './Interactions/Types/InteractionResponseType'
+import InteractionType from './Interactions/Types/InteractionType'
+import ConfigService from './Services/ConfigService'
+import MongoService from './Services/MongoService'
+import CommandHandler from './Utils/CommandHandler'
+import Logger from './Utils/Logger'
 
 
 config()
@@ -19,9 +18,8 @@ config()
 export default class Bot {
   public static token = process.env.bot_token!
   private static instance: Bot
+  public client!: Client
   private commandHandler!: CommandHandler
-  private client!: Client
-  private logger!: Logger
 
   private constructor() {}
 
@@ -29,11 +27,10 @@ export default class Bot {
     return Bot.instance || (Bot.instance = new Bot())
   }
 
-  public start = (): void => {
-    this.logger = new Logger()
+  public start = async (): Promise<void> => {
     this.commandHandler = new CommandHandler()
     this.client = new Client(
-      process.env.bot_token!,
+      Bot.token,
       {
         intents: [
           'guilds',
@@ -46,9 +43,16 @@ export default class Bot {
         allowedMentions: { users: false, roles: false, everyone: false, repliedUser: false },
       },
     )
-    this.loadCommands()
-    this.client.connect().then(() => this.logger.logSuccess('Bot ready'))
-    this.initializeMongo()
+
+    try {
+      await MongoService.connect(ConfigService.config.mongodb.uri)
+      Logger.logSuccess('Connected to mongodb')
+    } catch (e) {
+      console.error(e)
+    }
+
+    await this.client.connect().then(() => Logger.logSuccess('Bot ready'))
+    await this.loadCommands()
     this.client.on('rawWS', (p, id) => {
       if (p.t === 'INTERACTION_CREATE') {
         const interaction = p.d as IInteraction
@@ -62,7 +66,7 @@ export default class Bot {
     for (const file of files) {
       const cmd = await import(`./commands/${ file }`)
       this.commandHandler.register(cmd.default)
-      this.logger.logSuccess(`${ file } was loaded!`)
+      Logger.logSuccess(`${ file } was loaded!`)
     }
     await this.commandHandler.updateInfo(ConfigService.config.guild)
   }
@@ -77,24 +81,13 @@ export default class Bot {
     const response = await command.run(interaction.generateArguments(), interaction)
 
     if (response && interaction.responded)
-      return this.logger.logWarn(`Interaction response for the command ${ command.data.name } was already sent.`)
+      return Logger.logWarn(`Interaction response for the command ${ command.data.name } was already sent.`)
     if (!response && !interaction.responded) {
       return void (await interaction.respond({
-        type: InteractionResponseType.NO_INPUT,
+        type: InteractionResponseType.RESPONSE,
       }))
     }
     if (!response) return
     await interaction.respond(response)
-
   }
-
-  private initializeMongo = (): void => {
-    MongoClient.connect(ConfigService.config.mongodb.uri, { useUnifiedTopology: true })
-      .then((mongo_client) => {
-        this.client.mongodb = mongo_client.db(ConfigService.config.mongodb.base_col)
-        this.logger.logSuccess('Connected to mongodb')
-      })
-  }
-
-
 }

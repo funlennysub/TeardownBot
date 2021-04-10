@@ -1,10 +1,10 @@
-import IInteraction from './types/IInteraction'
 import { AllowedMentions, Channel, Client, Guild, Member, User } from 'eris'
-import IInteractionResponse from './types/IInteractionResponse'
 import fetch, { Response } from 'node-fetch'
-import IInteractionFollowUp from './types/IInteractionFollowUp'
-import InteractionResponseType from './types/InteractionResponseType'
 import ConfigService from '../Services/ConfigService'
+import IInteraction from './types/IInteraction'
+import IInteractionFollowUp from './types/IInteractionFollowUp'
+import IInteractionResponse from './types/IInteractionResponse'
+import InteractionResponseType from './types/InteractionResponseType'
 
 const botId = ConfigService.config.applicationId
 
@@ -30,11 +30,11 @@ export default class Interaction {
 
   async getMember(guild?: Guild): Promise<Member | undefined> {
     if (!guild) guild = await this.getGuild()
-    return guild?.members.get(this.data.member.user.id)
+    return guild?.members.get(this.data.member!.user.id)
   }
 
   async getUser(): Promise<User | undefined> {
-    return this.client.users.get(this.data.member.user.id)
+    return this.client.users.get(this.data.member!.user.id)
   }
 
   async deferRespond(): Promise<Response> {
@@ -60,7 +60,7 @@ export default class Interaction {
     })
   }
 
-  async edit(id: string, content: string | { content?: string; embeds: any[]; allowed_mentions: AllowedMentions }): Promise<Response> {
+  async edit(id: string, content: string | { content?: string; embeds: Array<any>; allowed_mentions: AllowedMentions }): Promise<Response> {
     return fetch(
       'https://discord.com/api/v8/webhooks/' + botId + '/' + this.data.token + '/messages/' + id,
       {
@@ -81,7 +81,22 @@ export default class Interaction {
     )
   }
 
-  generateArguments(): Record<string, any> {
-    return Object.fromEntries(this.data.data.options?.map((e) => [e.name, e.value]) ?? [])
+  generateArguments(): { _: string[] } {
+    let { data } = this.data
+    let map = { _: [data.name] }
+
+    walk(data.options)
+    return map
+
+    function walk(opts) {
+      for (let { name, value, options } of opts) {
+        if (options) {
+          map._.push(name)
+          walk(options)
+        } else {
+          map[name] = value
+        }
+      }
+    }
   }
 }

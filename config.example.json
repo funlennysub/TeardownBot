@@ -1,0 +1,12 @@
+{
+  "applicationId": "bot id",
+  "guild": "guild id",
+  "queueChannel": "queue channel for new tags",
+  "owners": ["owner1 id", "owner2 id"],
+  "mongodb": {
+    "db": "mongodb db",
+    "tagsCollection": "self-explanatory",
+    "queueCollection": "self-explanatory",
+    "uri": "mongodb uri"
+  }
+}

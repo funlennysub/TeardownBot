@@ -1,9 +1,9 @@
-import CommandUtils from './Interactions/CommandUtils'
-import BaseInteractionCommand from './BaseInteractionCommand'
-import CommandType from './Interactions/types/CommandType'
-import ConfigService from './Services/ConfigService'
-import getGuildCommands = CommandUtils.getGuildCommands
+import CommandUtils from '../Interactions/CommandUtils'
+import CommandType from '../Interactions/Types/CommandType'
+import ConfigService from '../Services/ConfigService'
+import BaseInteractionCommand from '../Types/BaseInteractionCommand'
 import deleteGuildCommand = CommandUtils.deleteGuildCommand
+import getGuildCommands = CommandUtils.getGuildCommands
 import setGuildCommand = CommandUtils.setGuildCommand
 
 export default class CommandHandler {

@@ -1,7 +1,7 @@
 {
   "name": "teardown-bot",
   "version": "0.1.0",
-  "homepage": "https://discord.gg/ZwzUtzWcqj",
+  "homepage": "https://discord.gg/teardown",
   "description": "Discord bot for the official Teardown server",
   "main": "src/index.js",
   "scripts": {

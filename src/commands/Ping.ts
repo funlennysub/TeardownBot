@@ -1,8 +1,8 @@
-import BaseInteractionCommand from '..//BaseInteractionCommand'
-import IInteractionResponse from '../Interactions/types/IInteractionResponse'
-import InteractionResponseType from '../Interactions/types/InteractionResponseType'
+import BaseInteractionCommand from '../Types/BaseInteractionCommand'
 import Interaction from '../Interactions/Interaction'
+import IInteractionResponse from '../Interactions/types/IInteractionResponse'
 import InteractionResponseFlags from '../Interactions/types/InteractionResponseFlags'
+import InteractionResponseType from '../Interactions/types/InteractionResponseType'
 
 export default class PingCommand extends BaseInteractionCommand {
   constructor() {
@@ -14,21 +14,11 @@ export default class PingCommand extends BaseInteractionCommand {
   }
 
   async run(args: Record<string, any>, interaction: Interaction): Promise<IInteractionResponse> {
-    // const member = await interaction.getMember()
-    // if (!member?.permissions.has('manageRoles'))
-    //   return {
-    //     type: InteractionResponseType.RESPONSE_NO_INPUT,
-    //     data: {
-    //       content: 'You don\'t have perms.',
-    //       flags: InteractionResponseFlags.EPHEMERAL,
-    //     },
-    //   }
-
     return {
       type: InteractionResponseType.RESPONSE_NO_INPUT,
       data: {
         content: 'pong',
-        flags: InteractionResponseFlags.EPHEMERAL
+        flags: InteractionResponseFlags.EPHEMERAL,
       },
     }
   }
