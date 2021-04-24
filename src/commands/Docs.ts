@@ -39,7 +39,7 @@ export default class PingCommand extends BaseInteractionCommand {
       ],
     })
 
-    this.ALLOWED_CHANNELS = ['768940642767208468', '780106606456733727']
+    this.ALLOWED_CHANNELS = ['780106606456733727', '768940642767208468', '806440595891290142']
   }
 
   async run(args: { _: Array<string>, name: string, branch?: string }, interaction: Interaction): Promise<IInteractionResponse> {

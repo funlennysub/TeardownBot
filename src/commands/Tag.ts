@@ -204,7 +204,7 @@ export default class TagsCommand extends BaseInteractionCommand {
   }
 
   run = async (args: Args, interaction: Interaction): Promise<IInteractionResponse | void> => {
-    // 'use' | 'list' | 'add' | 'delete' | 'rename' | 'edit' | 'approve' | 'decline'
+    // 'use' | 'info | 'list' | 'add' | 'delete' | 'public' | 'rename' | 'edit' | 'approve' | 'decline'
     const action = args._[1]
     if (!this.ALLOWED_CHANNELS.includes(interaction.data.channel_id!))
       return {
@@ -257,7 +257,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     return {
       type: InteractionResponseType.RESPONSE,
       data: {
-        content: tag[0].content,
+        content: tag[0].content.replace(/\\n/g, '\n'),
         flags: InteractionResponseFlags.NORMAL,
         allowed_mentions: { users: false, roles: false, everyone: false, repliedUser: false },
       },
