@@ -1,10 +1,10 @@
 import { AllowedMentions, Channel, Client, Guild, Member, User } from 'eris'
 import fetch, { Response } from 'node-fetch'
 import ConfigService from '../Services/ConfigService'
-import IInteraction from './types/IInteraction'
-import IInteractionFollowUp from './types/IInteractionFollowUp'
-import IInteractionResponse from './types/IInteractionResponse'
-import InteractionResponseType from './types/InteractionResponseType'
+import IInteraction from './Types/IInteraction'
+import IInteractionFollowUp from './Types/IInteractionFollowUp'
+import IInteractionResponse from './Types/IInteractionResponse'
+import InteractionResponseType from './Types/InteractionResponseType'
 
 const botId = ConfigService.config.applicationId
 

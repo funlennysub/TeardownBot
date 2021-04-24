@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import Bot from '../Bot'
-import ICommandData from './types/ICommandData'
+import ICommandData from './Types/ICommandData'
 
 namespace CommandUtils {
   export async function getGuildCommands(guild: string, applicationId: string): Promise<Array<{ name: string; id: string }>> {
