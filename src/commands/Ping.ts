@@ -15,7 +15,7 @@ export default class PingCommand extends BaseInteractionCommand {
 
   async run(args: Record<string, any>, interaction: Interaction): Promise<IInteractionResponse> {
     return {
-      type: InteractionResponseType.RESPONSE_NO_INPUT,
+      type: InteractionResponseType.RESPONSE,
       data: {
         content: 'pong',
         flags: InteractionResponseFlags.EPHEMERAL,

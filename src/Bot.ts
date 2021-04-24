@@ -12,7 +12,6 @@ import MongoService from './Services/MongoService'
 import CommandHandler from './Utils/CommandHandler'
 import Logger from './Utils/Logger'
 
-
 config()
 
 export default class Bot {
@@ -64,9 +63,9 @@ export default class Bot {
   private loadCommands = async (): Promise<void> => {
     let files = readdirSync(join(__dirname, './commands')).map((file) => basename(file, '.js'))
     for (const file of files) {
-      const cmd = await import(`./commands/${ file }`)
+      const cmd = await import(`./commands/${file}`)
       this.commandHandler.register(cmd.default)
-      Logger.logSuccess(`${ file } was loaded!`)
+      Logger.logSuccess(`${file} was loaded!`)
     }
     await this.commandHandler.updateInfo(ConfigService.config.guild)
   }
@@ -81,7 +80,7 @@ export default class Bot {
     const response = await command.run(interaction.generateArguments(), interaction)
 
     if (response && interaction.responded)
-      return Logger.logWarn(`Interaction response for the command ${ command.data.name } was already sent.`)
+      return Logger.logWarn(`Interaction response for the command ${command.data.name} was already sent.`)
     if (!response && !interaction.responded) {
       return void (await interaction.respond({
         type: InteractionResponseType.RESPONSE,

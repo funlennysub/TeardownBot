@@ -34,7 +34,7 @@ export default class TagUtils {
 
     const queueChannel = guild.channels.get(TagUtils.queueChannel)! as TextChannel
     await queueChannel.createMessage({
-      content: `Action ID: ${ actionId }`,
+      content: `Action ID: ${actionId}`,
       embed: {
         color: 0xFF97A7,
         title: 'New tag to check',
@@ -42,12 +42,12 @@ export default class TagUtils {
         fields: [
           { name: 'Tag name', value: name, inline: true },
           { name: 'Value', value: 'Above 🔼', inline: true },
-          { name: 'Author', value: `${ author.mention } (${ formatUser(author) })`, inline: true },
+          { name: 'Author', value: `${author.mention} (${formatUser(author)})`, inline: true },
           { name: 'Action', value: TagUtils.setActionType(actionType) },
         ],
         footer: {
           icon_url: author.avatarURL,
-          text: `Author ID: ${ author.id }`,
+          text: `Author ID: ${author.id}`,
         },
         timestamp: new Date(),
       },

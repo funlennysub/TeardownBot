@@ -8,6 +8,8 @@ import InteractionResponseType from '../Interactions/Types/InteractionResponseTy
 import { Argument, DocsJSON, Return } from '../Types/Docs'
 
 export default class PingCommand extends BaseInteractionCommand {
+  private ALLOWED_CHANNELS: Array<string>
+
   constructor() {
     super({
       name: 'docs',
@@ -19,16 +21,42 @@ export default class PingCommand extends BaseInteractionCommand {
           type: CommandOptionType.STRING,
           required: true,
         },
+        {
+          name: 'branch',
+          description: 'Experimental or stable game version',
+          type: CommandOptionType.STRING,
+          choices: [
+            {
+              name: 'stable',
+              value: 'stable',
+            },
+            {
+              name: 'experimental',
+              value: 'exp',
+            },
+          ],
+        },
       ],
     })
+
+    this.ALLOWED_CHANNELS = ['768940642767208468', '780106606456733727']
   }
 
-  async run(args: { _: Array<string>, name: string }, interaction: Interaction): Promise<IInteractionResponse | void> {
+  async run(args: { _: Array<string>, name: string, branch?: string }, interaction: Interaction): Promise<IInteractionResponse> {
     const channel = await interaction.getChannel()
-    if (!['768940642767208468', '780106606456733727'].includes(channel!.id)) return
+    if (!this.ALLOWED_CHANNELS.includes(channel!.id)) return {
+      type: InteractionResponseType.RESPONSE,
+      data: {
+        content: `Commands are not allowed in this channel. Allowed channels: ${this.ALLOWED_CHANNELS.map((ch) => `<#${ch}>`).join(', ')}`,
+        flags: InteractionResponseFlags.EPHEMERAL,
+        allowed_mentions: { users: false, roles: false, everyone: false, repliedUser: false },
+      },
+    }
 
-    const res: DocsJSON = await fetch('https://raw.githubusercontent.com/funlennysub/teardown-api-docs-json/latest/api.json').then(res => res.json())
-    const name: string = args['name']
+    const branch = args.branch === undefined ? 'stable' : args.branch
+
+    const res: DocsJSON = await fetch(`https://raw.githubusercontent.com/funlennysub/teardown-api-docs-json/latest/${branch}_api.json`).then(res => res.json())
+    const name: string = args.name
     const docs = res.api
 
     const apiCategory = docs.find((cat) => cat.functions.find((func) => func.name.toLowerCase() === name.toLowerCase()))
@@ -36,7 +64,7 @@ export default class PingCommand extends BaseInteractionCommand {
       return {
         type: InteractionResponseType.RESPONSE,
         data: {
-          content: `Function \`${ name }\` not found.`,
+          content: `Function \`${name}\` not found.`,
           flags: InteractionResponseFlags.EPHEMERAL,
         },
       }
@@ -47,7 +75,7 @@ export default class PingCommand extends BaseInteractionCommand {
     const returnValuesFormatted = apiFunction.return.length > 0 ? this.formatAPIArgs(apiFunction.return) : 'none'
     const info = apiFunction.info
     const definition = apiFunction.def
-    const example = `\`\`\`lua\n${ apiFunction.example }\n\`\`\``
+    const example = `\`\`\`lua\n${apiFunction.example}\n\`\`\``
 
     return {
       type: InteractionResponseType.RESPONSE,
@@ -56,15 +84,15 @@ export default class PingCommand extends BaseInteractionCommand {
         embeds: [
           {
             color: 0xf0d080,
-            title: `#${ apiFunction.name }`,
+            title: `#${apiFunction.name}`,
             url: URL,
-            description: `\`${ definition }\`\n\n${ info }`,
+            description: `\`${definition}\`\n\n${info}`,
             fields: [
               { name: 'Arguments', value: argsFormatted },
               { name: 'Return value', value: returnValuesFormatted },
               { name: 'Example', value: example },
             ],
-            footer: { text: `API(Game) Version ${ res.version }` },
+            footer: { text: `API(Game) Version ${res.version}` },
           },
         ],
         flags: InteractionResponseFlags.NORMAL,
@@ -75,7 +103,7 @@ export default class PingCommand extends BaseInteractionCommand {
   private formatAPIArgs = (argsArray: Array<Argument> | Array<Return>) => {
     let res = ''
     argsArray.map((a) => {
-      res += `\`${ a.name }\` (${ a.optional ? a.type + ', optional' : a.type }) - ${ a.desc.replace('&ndash; ', '') }\n\n`
+      res += `\`${a.name}\` (${a.optional ? a.type + ', optional' : a.type}) - ${a.desc.replace('&ndash; ', '')}\n\n`
     })
     return res
   }
