@@ -1,7 +1,7 @@
 export interface Tag {
   name: string,
   content: string,
-  author_id: string, // TODO: change to ownerId
+  ownerId: string, // TODO: change to ownerId
   public: boolean,
   timeUsed: number,
 }

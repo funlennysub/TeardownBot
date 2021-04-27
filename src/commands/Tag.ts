@@ -278,7 +278,7 @@ export default class TagsCommand extends BaseInteractionCommand {
       }
 
     const guild = (await interaction.getGuild())!
-    const tagOwner = guild.members.get(tag[0].author_id)!.user
+    const tagOwner = guild.members.get(tag[0].ownerId)!.user
     return {
       type: InteractionResponseType.RESPONSE,
       data: {
@@ -372,8 +372,8 @@ export default class TagsCommand extends BaseInteractionCommand {
       }
 
     const guild = (await interaction.getGuild())!
-    const tagOwner = guild.members.get(tag[0].author_id)!.user
-    if (tag[0].author_id !== interaction.data.member?.user.id)
+    const tagOwner = guild.members.get(tag[0].ownerId)!.user
+    if (tag[0].ownerId !== interaction.data.member?.user.id)
       return {
         type: InteractionResponseType.RESPONSE,
         data: {
@@ -410,8 +410,8 @@ export default class TagsCommand extends BaseInteractionCommand {
       }
 
     const guild = (await interaction.getGuild())!
-    const tagOwner = guild.members.get(tag[0].author_id)!.user
-    if (tag[0].author_id !== interaction.data.member?.user.id)
+    const tagOwner = guild.members.get(tag[0].ownerId)!.user
+    if (tag[0].ownerId !== interaction.data.member?.user.id)
       return {
         type: InteractionResponseType.RESPONSE,
         data: {
@@ -494,7 +494,7 @@ export default class TagsCommand extends BaseInteractionCommand {
           await this.TAGS.insertOne({
             name: queuedTag.name,
             content: queuedTag.value,
-            author_id: queuedTag.ownerId,
+            ownerId: queuedTag.ownerId,
             public: false,
             timeUsed: 0,
           })
