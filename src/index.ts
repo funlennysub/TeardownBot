@@ -14,4 +14,8 @@ bot.client.on('messageCreate', async (msg: Message<GuildTextableChannel>) => {
   }
 })
 
+bot.client.on('error', (err) => {
+  console.log(err.name)
+})
+
 export default bot

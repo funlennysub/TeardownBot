@@ -345,7 +345,7 @@ export default class TagsCommand extends BaseInteractionCommand {
 
     const guild = (await interaction.getGuild())!
     const user = (await interaction.getUser())!
-    
+
     await TagUtils.queueAction(name, value!, user, 'add', guild)
     return {
       type: InteractionResponseType.RESPONSE,
