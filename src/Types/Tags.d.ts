@@ -7,7 +7,7 @@ export interface Tag {
 }
 
 export interface QueuedTag {
-  _id: string,
+  _id: number,
   type: 'add' | 'rename' | 'edit',
   name: string,
   value: string,

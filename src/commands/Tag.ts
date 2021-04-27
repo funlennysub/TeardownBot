@@ -221,7 +221,7 @@ export default class TagsCommand extends BaseInteractionCommand {
       case 'info':
         return await this.onTagInfo(args, interaction)
       case 'list':
-        return await this.onTagList(args, interaction)
+        return await this.onTagList(args)
       case 'add':
         return await this.onTagAdd(args, interaction)
       case 'delete':
@@ -302,7 +302,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  async onTagList(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
+  async onTagList(args: Args): Promise<IInteractionResponse> {
     const { value } = args // name = page, value = queue || existing
     const tags = await this.TAGS.find({}).toArray()
     const queuedTags = await this.QUEUED_TAGS.find({}).toArray()
@@ -345,9 +345,8 @@ export default class TagsCommand extends BaseInteractionCommand {
 
     const guild = (await interaction.getGuild())!
     const user = (await interaction.getUser())!
-    const id = await TagUtils.queueAction(name, value!, user, 'add', guild)
-    await this.QUEUED_TAGS.insertOne({ name, value: value!, _id: id, type: 'add', ownerId: user.id })
-
+    
+    await TagUtils.queueAction(name, value!, user, 'add', guild)
     return {
       type: InteractionResponseType.RESPONSE,
       data: {
@@ -467,7 +466,7 @@ export default class TagsCommand extends BaseInteractionCommand {
 
     const guild = (await interaction.getGuild())!
     const member = (await interaction.getMember(guild))!
-    const queuedTag = await this.QUEUED_TAGS.findOne({ _id: name })
+    const queuedTag = await this.QUEUED_TAGS.findOne({ _id: Number(name) })
 
     if (queuedTag === null)
       return {
@@ -509,7 +508,7 @@ export default class TagsCommand extends BaseInteractionCommand {
       }
     }
 
-    await this.QUEUED_TAGS.deleteOne({ _id: name })
+    await this.QUEUED_TAGS.deleteOne({ _id: Number(name) })
     return {
       type: InteractionResponseType.RESPONSE,
       data: {

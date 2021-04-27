@@ -52,6 +52,7 @@ export default class TagUtils {
         timestamp: new Date(),
       },
     })
+    await TagUtils.queuedTags.insertOne({ _id: actionId, name, value, type: actionType, ownerId: author.id })
     return actionId.toString()
   }
 
