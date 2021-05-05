@@ -32,4 +32,3 @@ export interface DocsJSON {
   baseURL: string,
   api: Array<Category>,
 }
-

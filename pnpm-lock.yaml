@@ -2,54 +2,49 @@ lockfileVersion: 5.3
 
 specifiers:
   '@types/mongodb': ^3.6.12
-  '@types/node': ^14.14.37
-  '@types/node-fetch': ^2.5.10
-  chalk: ^4.1.0
+  '@types/node': ^14.14.43
+  chalk: ^4.1.1
   dotenv: ^8.2.0
   eris: github:abalabahaha/eris#dev
   mongodb: ^3.6.6
-  node-fetch: ^2.6.1
+  node-abort-controller: ^2.0.0
+  petitio: ^1.3.1
   tsc-watch: ^4.2.9
   typescript: ^4.2.4
+  undici: ^4.0.0-rc.2
 
 dependencies:
-  chalk: 4.1.0
-  eris: github.com/abalabahaha/eris/e71c2bae25583a4aff7bf1c543ab0132e717b4a6
+  chalk: 4.1.1
+  eris: github.com/abalabahaha/eris/ea9d6700c8e3fedf5d966da4babe195c8cd681da
   mongodb: 3.6.6
-  node-fetch: 2.6.1
+  petitio: 1.3.1
 
 devDependencies:
   '@types/mongodb': 3.6.12
-  '@types/node': 14.14.37
-  '@types/node-fetch': 2.5.10
+  '@types/node': 14.14.43
   dotenv: 8.2.0
+  node-abort-controller: 2.0.0
   tsc-watch: 4.2.9_typescript@4.2.4
   typescript: 4.2.4
+  undici: 4.0.0-rc.2
 
 packages:
 
   /@types/bson/4.0.3:
     resolution: {integrity: sha512-mVRvYnTOZJz3ccpxhr3wgxVmSeiYinW+zlzQz3SXWaJmD1DuL05Jeq7nKw3SnbKmbleW5qrLG5vdyWe/A9sXhw==}
     dependencies:
-      '@types/node': 14.14.37
+      '@types/node': 14.14.43
     dev: true
 
   /@types/mongodb/3.6.12:
     resolution: {integrity: sha512-49aEzQD5VdHPxyd5dRyQdqEveAg9LanwrH8RQipnMuulwzKmODXIZRp0umtxi1eBUfEusRkoy8AVOMr+kVuFog==}
     dependencies:
       '@types/bson': 4.0.3
-      '@types/node': 14.14.37
+      '@types/node': 14.14.43
     dev: true
 
-  /@types/node-fetch/2.5.10:
-    resolution: {integrity: sha512-IpkX0AasN44hgEad0gEF/V6EgR5n69VEqPEgnmoM8GsIGro3PowbWs4tR6IhxUTyPLpOn+fiGG6nrQhcmoCuIQ==}
-    dependencies:
-      '@types/node': 14.14.37
-      form-data: 3.0.1
-    dev: true
-
-  /@types/node/14.14.37:
-    resolution: {integrity: sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==}
+  /@types/node/14.14.43:
+    resolution: {integrity: sha512-3pwDJjp1PWacPTpH0LcfhgjvurQvrZFBrC6xxjaUEZ7ifUtT32jtjPxEMMblpqd2Mvx+k8haqQJLQxolyGN/cQ==}
     dev: true
 
   /ansi-regex/5.0.0:
@@ -64,10 +59,6 @@ packages:
       color-convert: 2.0.1
     dev: false
 
-  /asynckit/0.4.0:
-    resolution: {integrity: sha1-x57Zf380y48robyXkLzDZkdLS3k=}
-    dev: true
-
   /bl/2.2.1:
     resolution: {integrity: sha512-6Pesp1w0DEX1N550i/uGV/TqucVL4AM/pgThFSN/Qq9si1/DF9aIHs1BxD8V/QU0HoeHO6cQRTAuYnLPKq1e4g==}
     dependencies:
@@ -80,8 +71,8 @@ packages:
     engines: {node: '>=0.6.19'}
     dev: false
 
-  /chalk/4.1.0:
-    resolution: {integrity: sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==}
+  /chalk/4.1.1:
+    resolution: {integrity: sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==}
     engines: {node: '>=10'}
     dependencies:
       ansi-styles: 4.3.0
@@ -99,13 +90,6 @@ packages:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
     dev: false
 
-  /combined-stream/1.0.8:
-    resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
-    engines: {node: '>= 0.8'}
-    dependencies:
-      delayed-stream: 1.0.0
-    dev: true
-
   /core-util-is/1.0.2:
     resolution: {integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=}
     dev: false
@@ -117,11 +101,6 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-    dev: true
-
-  /delayed-stream/1.0.0:
-    resolution: {integrity: sha1-3zrhmayt+31ECqrgsp4icrJOxhk=}
-    engines: {node: '>=0.4.0'}
     dev: true
 
   /denque/1.5.0:
@@ -148,15 +127,6 @@ packages:
       split: 0.3.3
       stream-combiner: 0.0.4
       through: 2.3.8
-    dev: true
-
-  /form-data/3.0.1:
-    resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
-    engines: {node: '>= 6'}
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.30
     dev: true
 
   /from/0.1.7:
@@ -189,18 +159,6 @@ packages:
     dev: false
     optional: true
 
-  /mime-db/1.47.0:
-    resolution: {integrity: sha512-QBmA/G2y+IfeS4oktet3qRZ+P5kPhCKRXxXnQEudYqUaEioAU1/Lq2us3D/t1Jfo4hE9REQPrbB7K5sOczJVIw==}
-    engines: {node: '>= 0.6'}
-    dev: true
-
-  /mime-types/2.1.30:
-    resolution: {integrity: sha512-crmjA4bLtR8m9qLpHvgxSChT+XoSlZi8J4n/aIdn3z92e/U47Z0V/yl+Wh9W046GgFVAmoNR/fmdbZYcSSIUeg==}
-    engines: {node: '>= 0.6'}
-    dependencies:
-      mime-db: 1.47.0
-    dev: true
-
   /mongodb/3.6.6:
     resolution: {integrity: sha512-WlirMiuV1UPbej5JeCMqE93JRfZ/ZzqE7nJTwP85XzjAF4rRSeq2bGCb1cjfoHLOF06+HxADaPGqT0g3SbVT1w==}
     engines: {node: '>=4'}
@@ -228,23 +186,22 @@ packages:
       bl: 2.2.1
       bson: 1.1.6
       denque: 1.5.0
-      optional-require: 1.0.2
+      optional-require: 1.0.3
       safe-buffer: 5.2.1
     optionalDependencies:
       saslprep: 1.0.3
     dev: false
 
+  /node-abort-controller/2.0.0:
+    resolution: {integrity: sha512-L8RfEgjBTHAISTuagw51PprVAqNZoG6KSB6LQ6H1bskMVkFs5E71IyjauLBv3XbuomJlguWF/VnRHdJ1gqiAqA==}
+    dev: true
+
   /node-cleanup/2.1.2:
     resolution: {integrity: sha1-esGavSl+Caf3KnFUXZUbUX5N3iw=}
     dev: true
 
-  /node-fetch/2.6.1:
-    resolution: {integrity: sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==}
-    engines: {node: 4.x || >=6.0.0}
-    dev: false
-
-  /optional-require/1.0.2:
-    resolution: {integrity: sha512-HZubVd6IfHsbnpdNF/ICaSAzBUEW1TievpkjY3tB4Jnk8L7+pJ3conPzUt3Mn/6OZx9uzTDOHYPGA8/AxYHBOg==}
+  /optional-require/1.0.3:
+    resolution: {integrity: sha512-RV2Zp2MY2aeYK5G+B/Sps8lW5NHAzE5QClbFP15j+PWmP+T9PxlJXBOOLoSAdgwFvS4t0aMR4vpedMkbHfh0nA==}
     engines: {node: '>=4'}
     dev: false
 
@@ -263,6 +220,11 @@ packages:
     dependencies:
       through: 2.3.8
     dev: true
+
+  /petitio/1.3.1:
+    resolution: {integrity: sha512-HV1TRcAZhjsKhkMPjh9jivQojcqQ0DE0X5kVTfEmnm+tzndYoKZiSXMQJCDyVaiant2VzDYBdWbJ4qPk+k0SRA==}
+    engines: {node: '>=12.0.0'}
+    dev: false
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
@@ -390,6 +352,11 @@ packages:
     hasBin: true
     dev: true
 
+  /undici/4.0.0-rc.2:
+    resolution: {integrity: sha512-f5mo74GoVOxEMbGvf55VavS95Z8TW3NH5ItbYCohnDZdDT9G+K0hiaRK1IBrcZi5wnbvaA7oWtEPRxofwhg7hg==}
+    engines: {node: '>=12.18'}
+    dev: true
+
   /util-deprecate/1.0.2:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
     dev: false
@@ -402,8 +369,8 @@ packages:
       isexe: 2.0.0
     dev: true
 
-  /ws/7.4.4:
-    resolution: {integrity: sha512-Qm8k8ojNQIMx7S+Zp8u/uHOx7Qazv3Yv4q68MiWWWOJhiwG5W3x7iqmRtJo8xxrciZUY4vRxUTJCKuRnF28ZZw==}
+  /ws/7.4.5:
+    resolution: {integrity: sha512-xzyu3hFvomRfXKH8vOFMU3OguG6oOvhXMo3xsGy3xWExqaM2dxBbVxuD99O7m3ZUFMvvscsZDqxfgMaRr/Nr1g==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -415,13 +382,13 @@ packages:
         optional: true
     dev: false
 
-  github.com/abalabahaha/eris/e71c2bae25583a4aff7bf1c543ab0132e717b4a6:
-    resolution: {tarball: https://codeload.github.com/abalabahaha/eris/tar.gz/e71c2bae25583a4aff7bf1c543ab0132e717b4a6}
+  github.com/abalabahaha/eris/ea9d6700c8e3fedf5d966da4babe195c8cd681da:
+    resolution: {tarball: https://codeload.github.com/abalabahaha/eris/tar.gz/ea9d6700c8e3fedf5d966da4babe195c8cd681da}
     name: eris
-    version: 0.15.1-dev
+    version: 0.15.2-dev
     engines: {node: '>=10.4.0'}
     dependencies:
-      ws: 7.4.4
+      ws: 7.4.5
     optionalDependencies:
       opusscript: 0.0.8
       tweetnacl: 1.0.3

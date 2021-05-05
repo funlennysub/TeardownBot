@@ -1,7 +1,7 @@
 export interface Tag {
   name: string,
   content: string,
-  ownerId: string, // TODO: change to ownerId
+  ownerId: string,
   public: boolean,
   timeUsed: number,
 }
@@ -11,5 +11,5 @@ export interface QueuedTag {
   type: 'add' | 'rename' | 'edit',
   name: string,
   value: string,
-  ownerId: string
+  ownerId: string,
 }

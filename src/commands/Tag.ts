@@ -6,7 +6,7 @@ import InteractionResponseFlags from '../Interactions/Types/InteractionResponseF
 import InteractionResponseType from '../Interactions/Types/InteractionResponseType'
 import ConfigService from '../Services/ConfigService'
 import MongoService from '../Services/MongoService'
-import BaseInteractionCommand from '../Types/BaseInteractionCommand'
+import BaseInteractionCommand from '../Interactions/BaseInteractionCommand'
 import { QueuedTag, Tag } from '../Types/Tags'
 import Discord from '../Utils/Discord'
 import TagUtils from '../Utils/TagUtils'

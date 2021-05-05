@@ -1,5 +1,4 @@
-import { config } from 'dotenv'
-import { Client } from 'eris'
+import { Client, GuildTextableChannel, Message } from 'eris'
 import { readdirSync } from 'fs'
 import { basename, join } from 'path'
 import Interaction from './Interactions/Interaction'
@@ -9,13 +8,12 @@ import InteractionResponseType from './Interactions/Types/InteractionResponseTyp
 import InteractionType from './Interactions/Types/InteractionType'
 import ConfigService from './Services/ConfigService'
 import MongoService from './Services/MongoService'
-import CommandHandler from './Utils/CommandHandler'
+import CommandHandler from './Interactions/CommandHandler'
 import Logger from './Utils/Logger'
-
-config()
+import Command from './Interactions/Command'
 
 export default class Bot {
-  public static token = process.env.bot_token!
+  public static token = ConfigService.config.bot.token
   private static instance: Bot
   public client!: Client
   private commandHandler!: CommandHandler
@@ -52,25 +50,28 @@ export default class Bot {
 
     await this.client.connect().then(() => Logger.logSuccess('Bot ready'))
     await this.loadCommands()
-    this.client.on('rawWS', (p, id) => {
+    this.client.on('rawWS', (p) => {
       if (p.t === 'INTERACTION_CREATE') {
         const interaction = p.d as IInteraction
-        this.onInteraction(interaction)
+        this.onInteractionCommand(interaction)
       }
+    })
+    this.client.on('messageCreate', async (message: Message<GuildTextableChannel>) => {
+      await this.onTextCommand(message)
     })
   }
 
   private loadCommands = async (): Promise<void> => {
-    let files = readdirSync(join(__dirname, './commands')).map((file) => basename(file, '.js'))
+    let files = readdirSync(join(__dirname, './Commands')).map((file) => basename(file, '.js'))
     for (const file of files) {
-      const cmd = await import(`./commands/${file}`)
+      const cmd = await import(`./Commands/${file}`)
       this.commandHandler.register(cmd.default)
       Logger.logSuccess(`${file} was loaded!`)
     }
     await this.commandHandler.updateInfo(ConfigService.config.guild)
   }
 
-  private onInteraction = async (data: IInteraction): Promise<void> => {
+  private onInteractionCommand = async (data: IInteraction): Promise<void> => {
     const interaction = new Interaction(data, this.client)
 
     if (interaction.data.type === InteractionType.PING) return void (await interaction.respond({ type: InteractionResponseType.PONG }))
@@ -88,5 +89,13 @@ export default class Bot {
     }
     if (!response) return
     await interaction.respond(response)
+  }
+
+  private onTextCommand = async (message: Message): Promise<void> => {
+    const inputCommand = new Command(message, this.client)
+    const command = this.commandHandler.getByName(inputCommand.generateArguments().name)
+    if (!command || command.type !== CommandType.TEXT) return
+
+    command.run(message, inputCommand.generateArguments().arguments)
   }
 }

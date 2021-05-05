@@ -1,11 +1,11 @@
-import fetch from 'node-fetch'
-import BaseInteractionCommand from '../Types/BaseInteractionCommand'
+import BaseInteractionCommand from '../Interactions/BaseInteractionCommand'
 import Interaction from '../Interactions/Interaction'
 import CommandOptionType from '../Interactions/Types/CommandOptionType'
 import IInteractionResponse from '../Interactions/Types/IInteractionResponse'
 import InteractionResponseFlags from '../Interactions/Types/InteractionResponseFlags'
 import InteractionResponseType from '../Interactions/Types/InteractionResponseType'
 import { Argument, DocsJSON, Return } from '../Types/Docs'
+import req from 'petitio'
 
 export default class PingCommand extends BaseInteractionCommand {
   private ALLOWED_CHANNELS: Array<string>
@@ -42,7 +42,7 @@ export default class PingCommand extends BaseInteractionCommand {
     this.ALLOWED_CHANNELS = ['780106606456733727', '768940642767208468', '806440595891290142']
   }
 
-  async run(args: { _: Array<string>, name: string, branch?: string }, interaction: Interaction): Promise<IInteractionResponse> {
+  async run(args: { _: Array<string>, name: string, branch?: 'stable' | 'exp' }, interaction: Interaction): Promise<IInteractionResponse> {
     const channel = await interaction.getChannel()
     if (!this.ALLOWED_CHANNELS.includes(channel!.id)) return {
       type: InteractionResponseType.RESPONSE,
@@ -55,7 +55,7 @@ export default class PingCommand extends BaseInteractionCommand {
 
     const branch = args.branch === undefined ? 'stable' : args.branch
 
-    const res: DocsJSON = await fetch(`https://raw.githubusercontent.com/funlennysub/teardown-api-docs-json/latest/${branch}_api.json`).then(res => res.json())
+    const res = await req(`https://raw.githubusercontent.com/funlennysub/teardown-api-docs-json/latest/${branch}_api.json`).json<DocsJSON>()
     const name: string = args.name
     const docs = res.api
 

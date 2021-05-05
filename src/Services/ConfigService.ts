@@ -5,11 +5,16 @@ export interface IConfig {
   applicationId: string,
   guild: string,
   queueChannel: string,
-  owners: Array<string>
+  bot: {
+    prefix: string,
+    owners: Array<string>,
+    token: string,
+  },
   mongodb: {
     db: string,
     tagsCollection: string,
     queueCollection: string,
+    password: string,
     uri: string,
   },
 }

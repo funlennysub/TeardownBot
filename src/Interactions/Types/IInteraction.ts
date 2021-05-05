@@ -11,5 +11,5 @@ export default interface IInteraction {
   member?: Member,
   user?: User,
   token: string,
-  version: 1,
+  version: number,
 }

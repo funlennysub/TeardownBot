@@ -1,10 +1,12 @@
-import { AllowedMentions, Channel, Client, Guild, Member, User } from 'eris'
-import fetch, { Response } from 'node-fetch'
+import { AllowedMentions, Channel, Client, Embed, Guild, Member, User } from 'eris'
 import ConfigService from '../Services/ConfigService'
 import IInteraction from './Types/IInteraction'
 import IInteractionFollowUp from './Types/IInteractionFollowUp'
 import IInteractionResponse from './Types/IInteractionResponse'
 import InteractionResponseType from './Types/InteractionResponseType'
+import req from 'petitio'
+import { PetitioResponse } from 'petitio/dist/lib/PetitioResponse'
+import InteractionConstants from './Constants'
 
 const botId = ConfigService.config.applicationId
 
@@ -13,9 +15,8 @@ export default class Interaction {
 
   constructor(public data: IInteraction, private client: Client) {}
 
-  private get headers(): Record<string, any> {
+  private static get headers(): Record<string, string> {
     return {
-      // Authorization: 'Bot ' + this.client.token,
       'Content-Type': 'application/json',
     }
   }
@@ -37,48 +38,38 @@ export default class Interaction {
     return this.client.users.get(this.data.member!.user.id)
   }
 
-  async deferRespond(): Promise<Response> {
+  async deferRespond(): Promise<PetitioResponse> {
     return this.respond({
       type: InteractionResponseType.WAIT,
     })
   }
 
-  async respond(response: IInteractionResponse): Promise<Response> {
+  async respond(response: IInteractionResponse): Promise<PetitioResponse> {
     this.responded = true
-    return fetch('https://discord.com/api/v8/interactions/' + this.data.id + '/' + this.data.token + '/callback', {
-      method: 'post',
-      body: JSON.stringify(response),
-      headers: this.headers,
-    })
+    return await req(`${InteractionConstants.baseURL}/interactions/${this.data.id}/${this.data.token}/callback`, 'POST')
+      .body(JSON.stringify(response))
+      .header(Interaction.headers)
+      .send()
   }
 
-  async send(content: string, options: IInteractionFollowUp = {}): Promise<Response> {
-    return fetch('https://discord.com/api/v8/webhooks/' + botId + '/' + this.data.token, {
-      method: 'post',
-      body: JSON.stringify({ content, ...options }),
-      headers: this.headers,
-    })
+  async send(content: string, options: IInteractionFollowUp = {}): Promise<PetitioResponse> {
+    return await req(`${InteractionConstants.baseURL}/webhooks/${botId}/${this.data.token}`, 'POST')
+      .body(JSON.stringify({ content, ...options }))
+      .header(Interaction.headers)
+      .send()
   }
 
-  async edit(id: string, content: string | { content?: string; embeds: Array<any>; allowed_mentions: AllowedMentions }): Promise<Response> {
-    return fetch(
-      'https://discord.com/api/v8/webhooks/' + botId + '/' + this.data.token + '/messages/' + id,
-      {
-        method: 'patch',
-        body: JSON.stringify(typeof content === 'string' ? { content } : content),
-        headers: this.headers,
-      },
-    )
+  async edit(id: string, content: string | { content?: string, embeds: Array<Embed>, allowed_mentions: AllowedMentions }): Promise<PetitioResponse> {
+    return await req(`${InteractionConstants.baseURL}/webhooks/${botId}/${this.data.token}/messages/${id}`, 'PATCH')
+      .body(JSON.stringify(typeof content === 'string' ? { content } : content))
+      .header(Interaction.headers)
+      .send()
   }
 
-  async deleteMessage(id: '@original' | string): Promise<Response> {
-    return fetch(
-      'https://discord.com/api/v8/webhooks/' + botId + '/' + this.data.token + '/messages/' + id,
-      {
-        method: 'delete',
-        headers: this.headers,
-      },
-    )
+  async deleteMessage(id: '@original' | string): Promise<PetitioResponse> {
+    return await req(`${InteractionConstants.baseURL}/webhooks/${botId}/${this.data.token}/messages/${id}`, 'DELETE')
+      .header(Interaction.headers)
+      .send()
   }
 
   generateArguments(): { _: string[] } {

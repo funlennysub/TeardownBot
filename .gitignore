@@ -1,8 +1,4 @@
 .idea
-
 node_modules/
-
 out/
-
 config.json
-.env
