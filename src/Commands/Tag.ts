@@ -203,7 +203,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     this.QUEUED_TAGS = MongoService.getCollection<QueuedTag>(ConfigService.config.mongodb.queueCollection)
   }
 
-  run = async (args: Args, interaction: Interaction): Promise<IInteractionResponse | void> => {
+  async run(args: Args, interaction: Interaction): Promise<IInteractionResponse | void> {
     // 'use' | 'info | 'list' | 'add' | 'delete' | 'public' | 'rename' | 'edit' | 'approve' | 'decline'
     const action = args._[1]
     if (!this.ALLOWED_CHANNELS.includes(interaction.data.channel_id!))
@@ -240,7 +240,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     return void 0
   }
 
-  async onTagUse(args: Args): Promise<IInteractionResponse> {
+  private async onTagUse(args: Args): Promise<IInteractionResponse> {
     const { name } = args
     const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
@@ -264,7 +264,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  async onTagInfo(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
+  private async onTagInfo(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
     const { name } = args
     const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
@@ -302,7 +302,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  async onTagList(args: Args): Promise<IInteractionResponse> {
+  private async onTagList(args: Args): Promise<IInteractionResponse> {
     const { value } = args // name = page, value = queue || existing
     const tags = await this.TAGS.find({}).toArray()
     const queuedTags = await this.QUEUED_TAGS.find({}).toArray()
@@ -329,7 +329,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  async onTagAdd(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
+  private async onTagAdd(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
     const { name, value } = args
 
     const [isInQueue, isPassed] = await TagUtils.tagExists(name) // true = exist
@@ -357,7 +357,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  async onTagDelete(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
+  private async onTagDelete(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
     const { name } = args
     const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
@@ -394,7 +394,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  async onTagPublic(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
+  private async onTagPublic(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
     const { name, value } = args // name - name, value - true/false
 
     const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
@@ -433,7 +433,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  async onTagEdit(args: Args, interaction: Interaction, actionType: 'edit' | 'rename'): Promise<IInteractionResponse> {
+  private async onTagEdit(args: Args, interaction: Interaction, actionType: 'edit' | 'rename'): Promise<IInteractionResponse> {
     const { name, value } = args
     const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
@@ -461,7 +461,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  async checkTag(args: Args, interaction: Interaction, option: 'approve' | 'decline'): Promise<IInteractionResponse> {
+  private async checkTag(args: Args, interaction: Interaction, option: 'approve' | 'decline'): Promise<IInteractionResponse> {
     const { name } = args
 
     const guild = (await interaction.getGuild())!

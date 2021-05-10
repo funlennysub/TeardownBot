@@ -20,11 +20,11 @@ export default class Bot {
 
   private constructor() {}
 
-  public static initialize = (): Bot => {
+  public static initialize(): Bot {
     return Bot.instance || (Bot.instance = new Bot())
   }
 
-  public start = async (): Promise<void> => {
+  public async start(): Promise<void> {
     this.commandHandler = new CommandHandler()
     this.client = new Client(
       Bot.token,
@@ -62,7 +62,7 @@ export default class Bot {
     })
   }
 
-  private loadCommands = async (): Promise<void> => {
+  private async loadCommands(): Promise<void> {
     let files = readdirSync(join(__dirname, './Commands')).map((file) => basename(file, '.js'))
     for (const file of files) {
       const cmd = await import(`./Commands/${file}`)
@@ -72,7 +72,7 @@ export default class Bot {
     await this.commandHandler.updateInfo(ConfigService.config.guild)
   }
 
-  private onInteractionCommand = async (data: IInteraction): Promise<void> => {
+  private async onInteractionCommand(data: IInteraction): Promise<void> {
     const interaction = new Interaction(data, this.client)
 
     if (interaction.data.type === InteractionType.PING) return void (await interaction.respond({ type: InteractionResponseType.PONG }))
@@ -92,7 +92,7 @@ export default class Bot {
     await interaction.respond(response)
   }
 
-  private onTextCommand = async (message: Message): Promise<void> => {
+  private async onTextCommand(message: Message): Promise<void> {
     const inputCommand = new Command(message, this.client)
     const command = this.commandHandler.getByName(inputCommand.generateArguments().name)
     if (!command || command.type !== CommandType.TEXT) return

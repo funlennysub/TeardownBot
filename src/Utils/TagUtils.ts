@@ -16,7 +16,7 @@ export default class TagUtils {
 
   private constructor() {}
 
-  public static tagExists = async (name: string): Promise<Array<boolean>> => {
+  public static async tagExists(name: string): Promise<Array<boolean>> {
     const tag = await TagUtils.tags.find({ name }).collation({
       strength: 2,
       locale: 'en_US',
@@ -29,7 +29,7 @@ export default class TagUtils {
     return [queuedTag.length !== 0, tag.length !== 0]
   }
 
-  public static queueAction = async (name: string, value: string, author: User, actionType: ActionType, guild: Guild) => {
+  public static async queueAction(name: string, value: string, author: User, actionType: ActionType, guild: Guild) {
     const actionId = timestampToSnowflake()
 
     const queueChannel = guild.channels.get(TagUtils.queueChannel)! as TextChannel
@@ -56,7 +56,7 @@ export default class TagUtils {
     return actionId.toString()
   }
 
-  public static setActionType = (actionType: ActionType) => {
+  public static setActionType(actionType: ActionType) {
     switch (actionType) {
       case 'add':
         return 'Create new tag'

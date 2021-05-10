@@ -4,7 +4,7 @@ import CommandOptionType from '../Interactions/Types/CommandOptionType'
 import IInteractionResponse from '../Interactions/Types/IInteractionResponse'
 import InteractionResponseFlags from '../Interactions/Types/InteractionResponseFlags'
 import InteractionResponseType from '../Interactions/Types/InteractionResponseType'
-import { Argument, DocsJSON, Return } from '../Types/Docs'
+import { APIFunction, Argument, Category, DocsJSON, Return } from '../Types/Docs'
 import req from 'petitio'
 
 export default class PingCommand extends BaseInteractionCommand {
@@ -59,8 +59,9 @@ export default class PingCommand extends BaseInteractionCommand {
     const name: string = args.name
     const docs = res.api
 
-    const apiCategory = docs.find((cat) => cat.functions.find((func) => func.name.toLowerCase() === name.toLowerCase()))
-    if (apiCategory === undefined)
+    const [category, apiFunction] = this.findDoc(name, res)
+
+    if (category === undefined && apiFunction === undefined)
       return {
         type: InteractionResponseType.RESPONSE,
         data: {
@@ -68,14 +69,13 @@ export default class PingCommand extends BaseInteractionCommand {
           flags: InteractionResponseFlags.EPHEMERAL,
         },
       }
-    const apiFunction = apiCategory.functions.find((func) => func.name.toLowerCase() === name.toLowerCase())!
 
-    const URL = res.baseURL + apiFunction.name
-    const argsFormatted = apiFunction.arguments.length > 0 ? this.formatAPIArgs(apiFunction.arguments) : 'none'
-    const returnValuesFormatted = apiFunction.return.length > 0 ? this.formatAPIArgs(apiFunction.return) : 'none'
-    const info = apiFunction.info
-    const definition = apiFunction.def
-    const example = `\`\`\`lua\n${apiFunction.example}\n\`\`\``
+    const URL = res.baseURL + apiFunction!.name
+    const argsFormatted = apiFunction!.arguments.length > 0 ? this.formatAPIArgs(apiFunction!.arguments) : 'none'
+    const returnValuesFormatted = apiFunction!.return.length > 0 ? this.formatAPIArgs(apiFunction!.return) : 'none'
+    const info = apiFunction!.info
+    const definition = apiFunction!.def
+    const example = `\`\`\`lua\n${apiFunction!.example}\n\`\`\``
 
     return {
       type: InteractionResponseType.RESPONSE,
@@ -84,7 +84,7 @@ export default class PingCommand extends BaseInteractionCommand {
         embeds: [
           {
             color: 0xf0d080,
-            title: `#${apiFunction.name}`,
+            title: `#${apiFunction!.name}`,
             url: URL,
             description: `\`${definition}\`\n\n${info}`,
             fields: [
@@ -101,7 +101,16 @@ export default class PingCommand extends BaseInteractionCommand {
     }
   }
 
-  private formatAPIArgs = (argsArray: Array<Argument> | Array<Return>) => {
+  private findDoc(name: string, docs: DocsJSON): [Category?, APIFunction?] {
+    for (const cat of docs.api) {
+      for (const func of cat.functions) {
+        if (func.name.toLowerCase() === name.toLowerCase()) return [cat, func];
+      }
+    }
+    return [undefined, undefined];
+  }
+
+  private formatAPIArgs (argsArray: Array<Argument | Return>) {
     let res = ''
     argsArray.map((a) => {
       res += `\`${a.name}\` (${a.optional ? a.type + ', optional' : a.type}) - ${a.desc.replace('&ndash; ', '')}\n\n`
