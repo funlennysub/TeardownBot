@@ -53,11 +53,9 @@ export default class PingCommand extends BaseInteractionCommand {
       },
     }
 
-    const branch = args.branch === undefined ? 'stable' : args.branch
-
+    const branch = args.branch ?? 'stable'
     const res = await req(`https://raw.githubusercontent.com/funlennysub/teardown-api-docs-json/latest/${branch}_api.json`).json<DocsJSON>()
-    const name: string = args.name
-    const docs = res.api
+    const name = args.name
 
     const [category, apiFunction] = this.findDoc(name, res)
 
@@ -96,7 +94,7 @@ export default class PingCommand extends BaseInteractionCommand {
           },
         ],
         flags: InteractionResponseFlags.NORMAL,
-        allowed_mentions: { users: false, roles: false, everyone: false, repliedUser: false }
+        allowed_mentions: { users: false, roles: false, everyone: false, repliedUser: false },
       },
     }
   }
@@ -104,16 +102,16 @@ export default class PingCommand extends BaseInteractionCommand {
   private findDoc(name: string, docs: DocsJSON): [Category?, APIFunction?] {
     for (const cat of docs.api) {
       for (const func of cat.functions) {
-        if (func.name.toLowerCase() === name.toLowerCase()) return [cat, func];
+        if (func.name.toLowerCase() === name.toLowerCase()) return [cat, func]
       }
     }
-    return [undefined, undefined];
+    return [undefined, undefined]
   }
 
-  private formatAPIArgs (argsArray: Array<Argument | Return>) {
+  private formatAPIArgs(argsArray: Array<Argument | Return>) {
     let res = ''
     argsArray.map((a) => {
-      res += `\`${a.name}\` (${a.optional ? a.type + ', optional' : a.type}) - ${a.desc.replace('&ndash; ', '')}\n\n`
+      res += `\`${a.name}\` (${a.optional ? `${a.type}, optional` : a.type}) - ${a.desc.replace('&ndash; ', '')}\n`
     })
     return res
   }
