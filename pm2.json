@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "td",
+      "script": "node",
+      "args": ["./out/index.js"]
+    }
+  ]
+}

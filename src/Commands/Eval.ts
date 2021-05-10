@@ -8,7 +8,7 @@ export default class EvalCommand extends BaseTextCommand {
   constructor() {
     super({
       name: 'eval',
-      desc: 'run js code',
+      description: 'run js code',
     })
   }
 
@@ -42,11 +42,13 @@ export default class EvalCommand extends BaseTextCommand {
     }
 
     const nope = new RegExp(`${ConfigService.config.bot.token}|${ConfigService.config.mongodb.password}`, 'gi')
-    result = inspect(result, { depth: 5 }).replace(nope, 'nope')
+    result = inspect(result, { depth: 1 }).replace(nope, 'nope')
     const timeSpent = ((Date.now() - start) / 1000).toFixed(3)
 
     if (result.length > 1900) {
-      const res = await req('https://hastebin.cc/documents').json<{ key: string }>()
+      const res = await req('https://hastebin.cc/documents')
+        .body(result)
+        .json<{ key: string }>()
       await tempMessage.edit(`Message is too long for DiScOrD: https://hastebin.cc/${res.key}.ts\nTook ${timeSpent} seconds.`)
     } else {
       await tempMessage.edit(`\`\`\`ts\n${result}\n\`\`\`\nTook ${timeSpent} seconds.`)

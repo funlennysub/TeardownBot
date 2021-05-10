@@ -8,7 +8,7 @@ import getGuildCommands = CommandUtils.getGuildCommands
 import setGuildCommand = CommandUtils.setGuildCommand
 
 export default class CommandHandler {
-  private registeredCommands = new Map<string, BaseInteractionCommand | BaseTextCommand>()
+  public static registeredCommands = new Map<string, BaseInteractionCommand | BaseTextCommand>()
 
   registerAll(commands: { new(): BaseInteractionCommand | BaseTextCommand }[]): void {
     for (const command of commands) this.register(command)
@@ -16,16 +16,17 @@ export default class CommandHandler {
 
   register(command: { new(): BaseInteractionCommand | BaseTextCommand }): void {
     const instance = new command()
-    this.registeredCommands.set(instance.data.name, instance)
+    CommandHandler.registeredCommands.set(instance.data.name, instance)
   }
 
   getByName(name: string): BaseInteractionCommand | BaseTextCommand | undefined {
-    return this.registeredCommands.get(name)
+    return CommandHandler.registeredCommands.get(name)
   }
 
   async updateInfo(guild: string): Promise<void> {
     const discordCommands = await getGuildCommands(guild, ConfigService.config.applicationId)
-    const commands = Array.from(this.registeredCommands.entries()).filter((e) => e[1].type === CommandType.INTERACTION)
+    const commands = Array.from(CommandHandler.registeredCommands.entries())
+      .filter((e) => e[1].type === CommandType.INTERACTION)
     const names = commands.map((e) => e[0])
 
     for (const command of discordCommands.filter((c) => !names.includes(c.name)))

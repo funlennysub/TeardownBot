@@ -96,6 +96,7 @@ export default class PingCommand extends BaseInteractionCommand {
           },
         ],
         flags: InteractionResponseFlags.NORMAL,
+        allowed_mentions: { users: false, roles: false, everyone: false, repliedUser: false }
       },
     }
   }

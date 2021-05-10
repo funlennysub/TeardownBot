@@ -33,6 +33,7 @@ export default class Bot {
           'guilds',
           'guildMembers',
           'guildMessages',
+          'guildPresences',
           'guildIntegrations',
           'guildMessageReactions',
         ],
