@@ -244,7 +244,7 @@ export default class TagsCommand extends BaseInteractionCommand {
 
   private async onTagUse(args: Args): Promise<IInteractionResponse> {
     const { name } = args
-    const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
+    const tag = await this.TAGS.find({ name: /name/i }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
     if (tag.length === 0)
       return {
