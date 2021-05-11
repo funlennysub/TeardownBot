@@ -244,7 +244,7 @@ export default class TagsCommand extends BaseInteractionCommand {
 
   private async onTagUse(args: Args): Promise<IInteractionResponse> {
     const { name } = args
-    const tag = await this.TAGS.find({ name: { $regex: name, $options: 'i' }}).toArray()
+    const tag = await this.TAGS.find({ name: { $regex: `\b${name}\b`, $options: 'gi' }}).toArray()
 
     if (tag.length === 0)
       return {
@@ -477,7 +477,6 @@ export default class TagsCommand extends BaseInteractionCommand {
     const { name } = args
 
     const guild = (await interaction.getGuild())!
-    const channel = (guild.channels.get(ConfigService.config.queueChannel)) as GuildTextableChannel
     const member = (await interaction.getMember(guild))!
     const queuedTag = await this.QUEUED_TAGS.findOne({ _id: Number(name) })
 
