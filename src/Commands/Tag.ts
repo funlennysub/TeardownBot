@@ -10,7 +10,9 @@ import BaseInteractionCommand from '../Interactions/BaseInteractionCommand'
 import { QueuedTag, Tag } from '../Types/Tags'
 import Discord from '../Utils/Discord'
 import TagUtils from '../Utils/TagUtils'
+import { GuildTextableChannel } from 'eris'
 import formatUser = Discord.formatUser
+import clearString = Discord.clearString
 
 type Args = { _: Array<string>, name: string, value?: string }
 
@@ -253,6 +255,14 @@ export default class TagsCommand extends BaseInteractionCommand {
         },
       }
 
+    if (tag.length > 1)
+      return {
+        type: InteractionResponseType.RESPONSE,
+        data: {
+          content: `Multiple tags were found. ${tag.map((tag) => `${clearString(tag.name)}`).join(', ')}`,
+        },
+      }
+
     await this.TAGS.updateOne({ name }, { $inc: { timeUsed: 1 } })
     return {
       type: InteractionResponseType.RESPONSE,
@@ -465,6 +475,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     const { name } = args
 
     const guild = (await interaction.getGuild())!
+    const channel = (guild.channels.get(ConfigService.config.queueChannel)) as GuildTextableChannel
     const member = (await interaction.getMember(guild))!
     const queuedTag = await this.QUEUED_TAGS.findOne({ _id: Number(name) })
 
@@ -509,6 +520,13 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
 
     await this.QUEUED_TAGS.deleteOne({ _id: Number(name) })
+    const dm = await member.user.getDMChannel()
+
+    try {
+      await dm.createMessage(`Your changes were ${option}d`)
+    } catch (e) {
+      await channel.createMessage(`${member.mention} DMs are closed.`)
+    }
     return {
       type: InteractionResponseType.RESPONSE,
       data: {

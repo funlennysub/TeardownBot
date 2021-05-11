@@ -34,6 +34,7 @@ export default class Bot {
           'guildMembers',
           'guildMessages',
           'guildPresences',
+          'directMessages',
           'guildIntegrations',
           'guildMessageReactions',
         ],

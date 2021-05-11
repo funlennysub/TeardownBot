@@ -23,6 +23,12 @@ namespace Discord {
   export function formatUser(user: User): string {
     return `${user.username}#${user.discriminator}`
   }
+
+  export function clearString(string: string): string {
+    return string
+      .replace(/\\/g, '\\')
+      .replace(/`/g, '\`')
+  }
 }
 
 export default Discord
