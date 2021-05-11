@@ -244,7 +244,7 @@ export default class TagsCommand extends BaseInteractionCommand {
 
   private async onTagUse(args: Args): Promise<IInteractionResponse> {
     const { name } = args
-    const tag = await this.TAGS.find({ name: { $regex: new RegExp(`\b${name}\b`, 'gi') }}).toArray()
+    const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
     if (tag.length === 0)
       return {
@@ -254,17 +254,7 @@ export default class TagsCommand extends BaseInteractionCommand {
           flags: InteractionResponseFlags.EPHEMERAL,
         },
       }
-
-    if (tag.length > 1)
-      return {
-        type: InteractionResponseType.RESPONSE,
-        data: {
-          content: `Multiple tags were found. ${tag.map((tag) => `\`${clearString(tag.name)}\``).join(', ')}`,
-          flags: InteractionResponseFlags.NORMAL,
-          allowed_mentions: { users: false, roles: false, everyone: false, repliedUser: false },
-        },
-      }
-
+      
     await this.TAGS.updateOne({ name }, { $inc: { timeUsed: 1 } })
     return {
       type: InteractionResponseType.RESPONSE,
