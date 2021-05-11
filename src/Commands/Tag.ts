@@ -244,7 +244,7 @@ export default class TagsCommand extends BaseInteractionCommand {
 
   private async onTagUse(args: Args): Promise<IInteractionResponse> {
     const { name } = args
-    const tag = await this.TAGS.find({ name: /name/i }).collation({ strength: 2, locale: 'en_US' }).toArray()
+    const tag = await this.TAGS.find({ name: /name/i }).toArray()
 
     if (tag.length === 0)
       return {
@@ -520,7 +520,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
 
     await this.QUEUED_TAGS.deleteOne({ _id: Number(name) })
-    const dm = await member.user.getDMChannel()
+    const dm = await channel._client.getDMChannel(queuedTag.ownerId)
 
     try {
       await dm.createMessage(`Your changes were ${option}d`)
