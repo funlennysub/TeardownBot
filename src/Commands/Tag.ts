@@ -522,13 +522,15 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
 
     await this.QUEUED_TAGS.deleteOne({ _id: Number(name) })
-    const dm = await channel._client.getDMChannel(queuedTag.ownerId)
 
-    try {
-      await dm.createMessage(`Your changes were ${option}d`)
-    } catch (e) {
-      await channel.createMessage(`${member.mention} DMs are closed.`)
-    }
+    // todo: fix it later
+    // const dm = await channel._client.getDMChannel(queuedTag.ownerId)
+    //
+    // try {
+    //   await dm.createMessage(`Your changes were ${option}d`)
+    // } catch (e) {
+    //   await channel.createMessage(`${member.mention} DMs are closed.`)
+    // }
     return {
       type: InteractionResponseType.RESPONSE,
       data: {
