@@ -244,7 +244,7 @@ export default class TagsCommand extends BaseInteractionCommand {
 
   private async onTagUse(args: Args): Promise<IInteractionResponse> {
     const { name } = args
-    const tag = await this.TAGS.find({ name: { $regex: `\b${name}\b`, $options: 'gi' }}).toArray()
+    const tag = await this.TAGS.find({ name: { $regex: new RegExp(`\b${name}\b`, 'gi') }}).toArray()
 
     if (tag.length === 0)
       return {
