@@ -259,7 +259,9 @@ export default class TagsCommand extends BaseInteractionCommand {
       return {
         type: InteractionResponseType.RESPONSE,
         data: {
-          content: `Multiple tags were found. ${tag.map((tag) => `${clearString(tag.name)}`).join(', ')}`,
+          content: `Multiple tags were found. ${tag.map((tag) => `\`${clearString(tag.name)}\``).join(', ')}`,
+          flags: InteractionResponseFlags.NORMAL,
+          allowed_mentions: { users: false, roles: false, everyone: false, repliedUser: false },
         },
       }
 
