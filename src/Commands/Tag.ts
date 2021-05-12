@@ -55,6 +55,7 @@ export default class TagsCommand extends BaseInteractionCommand {
           name: 'list',
           description: 'List all tags',
           type: CommandOptionType.SUB_COMMAND,
+          options: [],
         },
         {
           name: 'add',
@@ -144,32 +145,6 @@ export default class TagsCommand extends BaseInteractionCommand {
             {
               name: 'value',
               description: 'New tag description',
-              type: CommandOptionType.STRING,
-              required: true,
-            },
-          ],
-        },
-        {
-          name: 'approve',
-          description: 'Approve any tag from a queue',
-          type: CommandOptionType.SUB_COMMAND,
-          options: [
-            {
-              name: 'name',
-              description: 'Action ID from a queue channel',
-              type: CommandOptionType.STRING,
-              required: true,
-            },
-          ],
-        },
-        {
-          name: 'decline',
-          description: 'Decline any tag from a queue',
-          type: CommandOptionType.SUB_COMMAND,
-          options: [
-            {
-              name: 'name',
-              description: 'Action ID from a queue channel',
               type: CommandOptionType.STRING,
               required: true,
             },
@@ -441,7 +416,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     return {
       type: InteractionResponseType.RESPONSE,
       data: {
-        content: `Tag changes has been sent to the queue.`,
+        content: `Tag \`${name}\` has been updated.`,
         flags: InteractionResponseFlags.EPHEMERAL,
         allowed_mentions: allowedMentions,
       },
