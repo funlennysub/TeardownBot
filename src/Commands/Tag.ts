@@ -310,7 +310,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     await this.TAGS.insertOne({
       name: name,
       content: value!,
-      ownerId: interaction.data.member!.id,
+      ownerId: interaction.data.member!.user.id,
       public: false,
       timeUsed: 0,
     })
