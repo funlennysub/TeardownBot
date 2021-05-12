@@ -1,37 +1,37 @@
 import chalk, { ForegroundColor } from 'chalk'
 
-export default class Logger {
-  private static timeColor: typeof ForegroundColor = 'cyanBright'
-  private static successColor: typeof ForegroundColor = 'greenBright'
-  private static useColor: typeof ForegroundColor = 'magentaBright'
-  private static warnColor: typeof ForegroundColor = 'yellowBright'
+namespace Logger {
+  const timeColor: typeof ForegroundColor = 'cyanBright'
+  const successColor: typeof ForegroundColor = 'greenBright'
+  const useColor: typeof ForegroundColor = 'magentaBright'
+  const warnColor: typeof ForegroundColor = 'yellowBright'
 
-  private constructor() {}
-
-  public static logSuccess(text: string, separator: string = '|'): void {
+  export function logSuccess(text: string, separator: string = '|'): void {
     const response = [
-      chalk[Logger.timeColor](new Date().toUTCString()),
+      chalk[timeColor](new Date().toUTCString()),
       separator,
-      chalk[Logger.successColor](text),
+      chalk[successColor](text),
     ]
     console.log(response.join(' '))
   }
 
-  public static logUse(text: string, separator: string = '|'): void {
+  export function logUse(text: string, separator: string = '|'): void {
     const response = [
-      chalk[Logger.timeColor](new Date().toUTCString()),
+      chalk[timeColor](new Date().toUTCString()),
       separator,
-      chalk[Logger.useColor](text),
+      chalk[useColor](text),
     ]
     console.log(response.join(' '))
   }
 
-  public static logWarn(text: string, separator: string = '|'): void {
+  export function logWarn(text: string, separator: string = '|'): void {
     const response = [
-      chalk[Logger.timeColor](new Date().toUTCString()),
+      chalk[timeColor](new Date().toUTCString()),
       separator,
-      chalk[Logger.warnColor](text),
+      chalk[warnColor](text),
     ]
     console.log(response.join(' '))
   }
 }
+
+export default Logger

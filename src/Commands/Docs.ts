@@ -6,6 +6,9 @@ import InteractionResponseFlags from '../Interactions/Types/InteractionResponseF
 import InteractionResponseType from '../Interactions/Types/InteractionResponseType'
 import { APIFunction, Argument, Category, DocsJSON, Return } from '../Types/Docs'
 import req from 'petitio'
+import { AllowedMentions } from 'eris'
+
+const allowedMentions: AllowedMentions = { users: false, roles: false, everyone: false, repliedUser: false }
 
 export default class PingCommand extends BaseInteractionCommand {
   private ALLOWED_CHANNELS: Array<string>
@@ -44,12 +47,13 @@ export default class PingCommand extends BaseInteractionCommand {
 
   async run(args: { _: Array<string>, name: string, branch?: 'stable' | 'exp' }, interaction: Interaction): Promise<IInteractionResponse> {
     const channel = await interaction.getChannel()
+
     if (!this.ALLOWED_CHANNELS.includes(channel!.id)) return {
       type: InteractionResponseType.RESPONSE,
       data: {
         content: `Commands are not allowed in this channel. Allowed channels: ${this.ALLOWED_CHANNELS.map((ch) => `<#${ch}>`).join(', ')}`,
         flags: InteractionResponseFlags.EPHEMERAL,
-        allowed_mentions: { users: false, roles: false, everyone: false, repliedUser: false },
+        allowed_mentions: allowedMentions,
       },
     }
 
@@ -65,6 +69,7 @@ export default class PingCommand extends BaseInteractionCommand {
         data: {
           content: `Function \`${name}\` not found.`,
           flags: InteractionResponseFlags.EPHEMERAL,
+          allowed_mentions: allowedMentions,
         },
       }
 
@@ -94,7 +99,7 @@ export default class PingCommand extends BaseInteractionCommand {
           },
         ],
         flags: InteractionResponseFlags.NORMAL,
-        allowed_mentions: { users: false, roles: false, everyone: false, repliedUser: false },
+        allowed_mentions: allowedMentions,
       },
     }
   }

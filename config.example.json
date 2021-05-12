@@ -1,7 +1,6 @@
 {
   "applicationId": "bot id",
   "guild": "guild id",
-  "queueChannel": "queue channel for new tags",
   "bot": {
     "prefix": "prefix",
     "owners": ["owner1 id", "owner2 id"],
@@ -10,7 +9,6 @@
   "mongodb": {
     "db": "mongodb db",
     "tagsCollection": "self-explanatory",
-    "queueCollection": "self-explanatory",
     "password": "db pass",
     "uri": "mongodb+srv://username:PASSWORD@blahblah/"
   }

@@ -11,6 +11,8 @@ import MongoService from './Services/MongoService'
 import CommandHandler from './Interactions/CommandHandler'
 import Logger from './Utils/Logger'
 import Command from './Interactions/Command'
+import logWarn = Logger.logWarn
+import logSuccess = Logger.logSuccess
 
 export default class Bot {
   public static token = ConfigService.config.bot.token
@@ -45,12 +47,12 @@ export default class Bot {
 
     try {
       await MongoService.connect(ConfigService.config.mongodb.uri)
-      Logger.logSuccess('Connected to mongodb')
+      logSuccess('Connected to mongodb')
     } catch (e) {
       console.error(e)
     }
 
-    await this.client.connect().then(() => Logger.logSuccess('Bot ready'))
+    await this.client.connect().then(() => logSuccess('Bot ready'))
     await this.loadCommands()
     this.client.on('rawWS', (p) => {
       if (p.t === 'INTERACTION_CREATE') {
@@ -68,7 +70,7 @@ export default class Bot {
     for (const file of files) {
       const cmd = await import(`./Commands/${file}`)
       this.commandHandler.register(cmd.default)
-      Logger.logSuccess(`${file} was loaded!`)
+      logSuccess(`${file} was loaded!`)
     }
     await this.commandHandler.updateInfo(ConfigService.config.guild)
   }
@@ -83,7 +85,7 @@ export default class Bot {
     const response = await command.run(interaction.generateArguments(), interaction)
 
     if (response && interaction.responded)
-      return Logger.logWarn(`Interaction response for the command ${command.data.name} was already sent.`)
+      return logWarn(`Interaction response for the command ${command.data.name} was already sent.`)
     if (!response && !interaction.responded) {
       return void (await interaction.respond({
         type: InteractionResponseType.RESPONSE,
