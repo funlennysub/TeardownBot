@@ -55,7 +55,14 @@ export default class TagsCommand extends BaseInteractionCommand {
           name: 'list',
           description: 'List all tags',
           type: CommandOptionType.SUB_COMMAND,
-          options: [],
+          options: [
+            {
+              name: 'name',
+              description: 'make discord happy',
+              type: CommandOptionType.STRING,
+              required: false
+            }
+          ],
         },
         {
           name: 'add',
