@@ -418,13 +418,13 @@ export default class TagsCommand extends BaseInteractionCommand {
       }
 
     const guild = (await interaction.getGuild())!
-    const tagOwner = guild.members.get(tag[0].ownerId)!
+    const tagOwner = guild.members.get(tag[0].ownerId)!.user
 
-    if (!tag[0].public || tag[0].ownerId !== interaction.data.member?.user.id)
+    if (!tag[0].public && tag[0].ownerId !== interaction.data.member?.user.id)
       return {
         type: InteractionResponseType.RESPONSE,
         data: {
-          content: `You don't have permissions to edit this tag. Ask tag owner ${tagOwner.mention} (${formatUser(tagOwner.user)}) to make it public or to edit it.`,
+          content: `You don't have permissions to modify this tag. Ask tag owner ${tagOwner.mention} (${formatUser(tagOwner)}`,
           flags: InteractionResponseFlags.EPHEMERAL,
           allowed_mentions: allowedMentions,
         },
