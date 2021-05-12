@@ -60,8 +60,11 @@ export default class TagsCommand extends BaseInteractionCommand {
               name: 'name',
               description: 'make discord happy',
               type: CommandOptionType.STRING,
-              required: false
-            }
+              required: true,
+              choices: [
+                { name: 'existing', value: 'existing' }
+              ]
+            },
           ],
         },
         {
