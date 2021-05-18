@@ -3,7 +3,7 @@ import req from 'petitio'
 import InteractionConstants from './Constants'
 import ConfigService from '../Services/ConfigService'
 
-type GuildCommands = { name: string; id: string }
+type GuildCommands = { name: string, id: string }
 
 namespace CommandUtils {
   export async function getGuildCommands(guildId: string, applicationId: string): Promise<Array<GuildCommands>> {

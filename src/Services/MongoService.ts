@@ -6,14 +6,17 @@ export default class MongoService {
 
   public static connect(uri: string) {
     return new Promise((resolve, reject) => {
-      MongoClient.connect(`${uri.replace('PASSWORD', ConfigService.config.mongodb.password)}`, { useUnifiedTopology: true }, (error, client: MongoClient) => {
-        if (error) {
-          reject(error)
-        } else {
-          MongoService.client = client
-          resolve(client)
-        }
-      })
+      MongoClient.connect(
+        `${uri.replace('%PASSWORD%', ConfigService.config.mongodb.password)}`,
+        { useUnifiedTopology: true },
+        (error, client: MongoClient) => {
+          if (error) {
+            reject(error)
+          } else {
+            MongoService.client = client
+            resolve(client)
+          }
+        })
     })
   }
 

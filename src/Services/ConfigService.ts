@@ -1,21 +1,7 @@
-import { readFileSync, writeFileSync } from 'fs'
-import { resolve } from 'path'
+import RawConfig from '../conf/config.example'
+import Config from '../conf/config'
 
-export interface IConfig {
-  applicationId: string,
-  guild: string,
-  bot: {
-    prefix: string,
-    owners: Array<string>,
-    token: string,
-  },
-  mongodb: {
-    db: string,
-    tagsCollection: string,
-    password: string,
-    uri: string,
-  },
-}
+export type IConfig = typeof RawConfig
 
 class ConfigService {
   config!: IConfig
@@ -24,12 +10,8 @@ class ConfigService {
     this.read()
   }
 
-  save(): void {
-    writeFileSync(resolve(__dirname, '../../config.json'), JSON.stringify(this.config, null, 2))
-  }
-
   read(): void {
-    this.config = JSON.parse(readFileSync(resolve(__dirname, '../../config.json'), 'utf8'))
+    this.config = Config
   }
 }
 

@@ -1,4 +1,4 @@
 .idea
 node_modules/
 out/
-config.json
+src/conf/config.ts

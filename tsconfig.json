@@ -8,9 +8,6 @@
     "noImplicitAny": false,
     "allowUnreachableCode": false,
     "allowJs": false,
-    "lib": [
-      "es2020", "DOM"
-    ],
     "module": "commonjs",
     "target": "es2020",
     "moduleResolution": "node",

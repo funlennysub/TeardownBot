@@ -54,6 +54,7 @@ export default class Bot {
 
     await this.client.connect().then(() => logSuccess('Bot ready'))
     await this.loadCommands()
+
     this.client.on('rawWS', (p) => {
       if (p.t === 'INTERACTION_CREATE') {
         const interaction = p.d as IInteraction
