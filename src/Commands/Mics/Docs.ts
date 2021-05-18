@@ -1,4 +1,4 @@
-import BaseInteractionCommand from '../../Interactions/Commands/BaseInteractionCommand'
+import BaseInteractionCommand from '../../Handlers/Commands/Types/BaseInteractionCommand'
 import Interaction from '../../Interactions/Interaction'
 import CommandOptionType from '../../Interactions/Types/CommandOptionType'
 import IInteractionResponse from '../../Interactions/Types/IInteractionResponse'

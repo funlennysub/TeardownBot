@@ -1,6 +1,6 @@
-import ICommandData from '../Types/ICommandData'
+import ICommandData from '../../Interactions/Types/ICommandData'
 import req from 'petitio'
-import InteractionConstants from '../Constants'
+import InteractionConstants from '../../Interactions/Constants'
 import ConfigService from '../../Services/ConfigService'
 
 type GuildCommands = { name: string, id: string }

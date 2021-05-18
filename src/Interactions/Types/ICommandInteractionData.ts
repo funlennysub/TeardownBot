@@ -1,4 +1,4 @@
-import IInteractionDataOption from './IInteractionDataOption';
+import IInteractionDataOption from './IInteractionDataOption'
 
 export default interface ICommandInteractionData {
   id: string,

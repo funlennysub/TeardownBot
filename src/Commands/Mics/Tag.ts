@@ -6,12 +6,12 @@ import InteractionResponseFlags from '../../Interactions/Types/InteractionRespon
 import InteractionResponseType from '../../Interactions/Types/InteractionResponseType'
 import ConfigService from '../../Services/ConfigService'
 import MongoService from '../../Services/MongoService'
-import BaseInteractionCommand from '../../Interactions/Commands/BaseInteractionCommand'
+import BaseInteractionCommand from '../../Handlers/Commands/Types/BaseInteractionCommand'
 import { Tag } from '../../Types/Tags'
-import Discord from '../../Utils/Discord'
+import DiscordUtils from '../../Utils/Discord'
 import TagUtils from '../../Utils/Tag'
 import { AllowedMentions } from 'eris'
-import formatUser = Discord.formatUser
+import formatUser = DiscordUtils.formatUser
 
 type Args = { _: Array<string>, name: string, value?: string }
 const allowedMentions: AllowedMentions = { users: false, roles: false, everyone: false, repliedUser: false }

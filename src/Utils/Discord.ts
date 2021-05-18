@@ -1,6 +1,6 @@
 import { User } from 'eris'
 
-namespace Discord {
+namespace DiscordUtils {
   // https://github.com/funlennysub/date-to-discord-snowflake/blob/master/index.js
   let epoch = 1420070400000 // Milliseconds since Discord Epoch, the first second of 2015 or 1420070400000.
   let increment = 0
@@ -31,4 +31,4 @@ namespace Discord {
   }
 }
 
-export default Discord
+export default DiscordUtils

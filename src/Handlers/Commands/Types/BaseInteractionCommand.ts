@@ -1,7 +1,7 @@
-import Interaction from '../Interaction'
-import CommandType from '../Types/CommandType'
-import ICommandData from '../Types/ICommandData'
-import IInteractionResponse from '../Types/IInteractionResponse'
+import Interaction from '../../../Interactions/Interaction'
+import CommandType from './CommandType'
+import ICommandData from '../../../Interactions/Types/ICommandData'
+import IInteractionResponse from '../../../Interactions/Types/IInteractionResponse'
 
 export default abstract class BaseInteractionCommand {
   readonly type: CommandType.INTERACTION = CommandType.INTERACTION
