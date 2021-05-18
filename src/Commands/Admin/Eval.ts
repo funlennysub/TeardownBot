@@ -1,6 +1,6 @@
-import BaseTextCommand from '../Interactions/BaseTextCommand'
+import BaseTextCommand from '../../Interactions/Commands/BaseTextCommand'
 import { Message } from 'eris'
-import ConfigService from '../Services/ConfigService'
+import ConfigService from '../../Services/ConfigService'
 import { inspect } from 'util'
 import req from 'petitio'
 

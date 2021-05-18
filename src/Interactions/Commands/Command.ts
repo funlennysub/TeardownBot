@@ -1,5 +1,5 @@
 import { Client, Message } from 'eris'
-import ConfigService from '../Services/ConfigService'
+import ConfigService from '../../Services/ConfigService'
 
 export default class Command {
   public readonly prefix: string

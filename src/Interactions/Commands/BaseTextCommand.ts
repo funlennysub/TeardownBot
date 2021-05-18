@@ -1,4 +1,4 @@
-import CommandType from './Types/CommandType'
+import CommandType from '../Types/CommandType'
 import { Message } from 'eris'
 
 export default abstract class BaseTextCommand {

@@ -1,7 +1,7 @@
-import BaseTextCommand from '../Interactions/BaseTextCommand'
+import BaseTextCommand from '../../Interactions/Commands/BaseTextCommand'
 import { Message } from 'eris'
-import CommandHandler from '../Interactions/CommandHandler'
-import ConfigService from '../Services/ConfigService'
+import CommandHandler from '../../Interactions/Commands/CommandHandler'
+import ConfigService from '../../Services/ConfigService'
 
 export default class InfoCommand extends BaseTextCommand {
   constructor() {

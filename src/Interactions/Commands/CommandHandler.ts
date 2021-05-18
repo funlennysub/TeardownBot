@@ -1,6 +1,6 @@
 import CommandUtils from './CommandUtils'
-import CommandType from './Types/CommandType'
-import ConfigService from '../Services/ConfigService'
+import CommandType from '../Types/CommandType'
+import ConfigService from '../../Services/ConfigService'
 import BaseInteractionCommand from './BaseInteractionCommand'
 import BaseTextCommand from './BaseTextCommand'
 import deleteGuildCommand = CommandUtils.deleteGuildCommand
@@ -14,9 +14,10 @@ export default class CommandHandler {
     for (const command of commands) this.register(command)
   }
 
-  register(command: { new(): BaseInteractionCommand | BaseTextCommand }): void {
+  register(command: { new(): BaseInteractionCommand | BaseTextCommand }): BaseTextCommand | BaseInteractionCommand {
     const instance = new command()
     CommandHandler.registeredCommands.set(instance.data.name, instance)
+    return instance
   }
 
   getByName(name: string): BaseInteractionCommand | BaseTextCommand | undefined {

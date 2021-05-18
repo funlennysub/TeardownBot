@@ -1,6 +1,5 @@
 import { Client, GuildTextableChannel, Message } from 'eris'
-import { readdirSync } from 'fs'
-import { basename, join } from 'path'
+import { join } from 'path'
 import Interaction from './Interactions/Interaction'
 import CommandType from './Interactions/Types/CommandType'
 import IInteraction from './Interactions/Types/IInteraction'
@@ -8,9 +7,10 @@ import InteractionResponseType from './Interactions/Types/InteractionResponseTyp
 import InteractionType from './Interactions/Types/InteractionType'
 import ConfigService from './Services/ConfigService'
 import MongoService from './Services/MongoService'
-import CommandHandler from './Interactions/CommandHandler'
+import CommandHandler from './Interactions/Commands/CommandHandler'
 import Logger from './Utils/Logger'
-import Command from './Interactions/Command'
+import Command from './Interactions/Commands/Command'
+import { getFiles } from './Utils/Fs'
 import logWarn = Logger.logWarn
 import logSuccess = Logger.logSuccess
 
@@ -67,11 +67,10 @@ export default class Bot {
   }
 
   private async loadCommands(): Promise<void> {
-    let files = readdirSync(join(__dirname, './Commands')).map((file) => basename(file, '.js'))
-    for (const file of files) {
-      const cmd = await import(`./Commands/${file}`)
-      this.commandHandler.register(cmd.default)
-      logSuccess(`${file} was loaded!`)
+    for await (const file of getFiles(join(__dirname, './Commands'))) {
+      const cmd = await import(file)
+      const instance = this.commandHandler.register(cmd.default)
+      logSuccess(`${instance.data.name} was loaded!`)
     }
     await this.commandHandler.updateInfo(ConfigService.config.guild)
   }
