@@ -27,9 +27,8 @@ export default class EvalCommand extends BaseTextCommand {
 
     const tempMessage = await message.channel.createMessage('loading')
     const start = Date.now()
-
-    const baseJs = `const MongoService = require('../Services/MongoService').default;
-    const ConfigService = require('../Services/ConfigService').default;
+    const baseJs = `const MongoService = require('../../Services/MongoService').default;
+    const ConfigService = require('../../Services/ConfigService').default;
     const bot = message._client;`
     let js = `${baseJs} ${raw}`
     if (js.includes('await')) js = `(async () => { ${js} })()`

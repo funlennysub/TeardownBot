@@ -10,6 +10,6 @@ export default {
     db: 'mongodb db',
     tagsCollection: 'self-explanatory',
     password: 'db pass',
-    uri: 'mongodb+srv://username:PASSWORD@blahblah/',
+    uri: 'mongodb+srv://username:%PASSWORD%@blahblah/',
   },
 }
