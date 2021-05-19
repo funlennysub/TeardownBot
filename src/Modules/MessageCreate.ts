@@ -10,10 +10,10 @@ import Command from '../Handlers/Commands/Command'
 import Logger from '../Utils/Logger'
 import logWarn = Logger.logWarn
 
-export default class OnCommands extends BaseEventModule {
+export default class MessageCreate extends BaseEventModule {
   constructor() {
     super({
-      name: 'OnCommands',
+      name: 'MessageCreate',
     })
   }
 

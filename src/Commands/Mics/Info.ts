@@ -4,14 +4,20 @@ import CommandHandler from '../../Handlers/Commands/CommandHandler'
 import ConfigService from '../../Services/ConfigService'
 
 export default class InfoCommand extends BaseTextCommand {
+  private allowedChannels: Array<string>
+
   constructor() {
     super({
       name: 'info',
       description: 'some bot info',
     })
+
+    this.allowedChannels = ['806440595891290142', '768940642767208468', '780106606456733727']
   }
 
   async run(message: Message): Promise<void | Message> {
+    if (!this.allowedChannels.includes(message.channel.id)) return
+
     const uptime = this.botUptime(message._client.uptime)
     const { slashCommands, defaultCommands } = this.returnCommands()
 

@@ -11,7 +11,7 @@ import { AllowedMentions } from 'eris'
 const allowedMentions: AllowedMentions = { users: false, roles: false, everyone: false, repliedUser: false }
 
 export default class PingCommand extends BaseInteractionCommand {
-  private ALLOWED_CHANNELS: Array<string>
+  private allowedChannels: Array<string>
 
   constructor() {
     super({
@@ -42,16 +42,16 @@ export default class PingCommand extends BaseInteractionCommand {
       ],
     })
 
-    this.ALLOWED_CHANNELS = ['780106606456733727', '768940642767208468', '806440595891290142']
+    this.allowedChannels = ['780106606456733727', '768940642767208468', '806440595891290142']
   }
 
   async run(args: { _: Array<string>, name: string, branch?: 'stable' | 'exp' }, interaction: Interaction): Promise<IInteractionResponse> {
     const channel = await interaction.getChannel()
 
-    if (!this.ALLOWED_CHANNELS.includes(channel!.id)) return {
+    if (!this.allowedChannels.includes(channel!.id)) return {
       type: InteractionResponseType.RESPONSE,
       data: {
-        content: `Commands are not allowed in this channel. Allowed channels: ${this.ALLOWED_CHANNELS.map((ch) => `<#${ch}>`).join(', ')}`,
+        content: `Commands are not allowed in this channel. Allowed channels: ${this.allowedChannels.map((ch) => `<#${ch}>`).join(', ')}`,
         flags: InteractionResponseFlags.EPHEMERAL,
         allowed_mentions: allowedMentions,
       },

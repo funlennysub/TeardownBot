@@ -17,8 +17,8 @@ type Args = { _: Array<string>, name: string, value?: string }
 const allowedMentions: AllowedMentions = { users: false, roles: false, everyone: false, repliedUser: false }
 
 export default class TagsCommand extends BaseInteractionCommand {
-  private ALLOWED_CHANNELS: Array<string>
-  private TAGS: Collection<Tag>
+  private allowedChannels: Array<string>
+  private tags: Collection<Tag>
 
   constructor() {
     super({
@@ -61,9 +61,7 @@ export default class TagsCommand extends BaseInteractionCommand {
               description: 'make discord happy',
               type: CommandOptionType.STRING,
               required: true,
-              choices: [
-                { name: 'existing', value: 'existing' }
-              ]
+              choices: [{ name: 'existing', value: 'existing' }],
             },
           ],
         },
@@ -163,46 +161,47 @@ export default class TagsCommand extends BaseInteractionCommand {
       ],
     })
 
-    this.ALLOWED_CHANNELS = ['780106606456733727', '768940642767208468', '806440595891290142']
-    this.TAGS = MongoService.getCollection<Tag>(ConfigService.config.mongodb.tagsCollection)
+    this.allowedChannels = ['780106606456733727', '768940642767208468', '806440595891290142']
+    this.tags = MongoService.getCollection<Tag>(ConfigService.config.mongodb.tagsCollection)
   }
 
   async run(args: Args, interaction: Interaction): Promise<IInteractionResponse | void> {
     // 'use' | 'info | 'list' | 'add' | 'delete' | 'public' | 'rename' | 'edit'
     const action = args._[1]
-    if (!this.ALLOWED_CHANNELS.includes(interaction.data.channel_id!))
+    if (!this.allowedChannels.includes(interaction.data.channel_id!))
       return {
         type: InteractionResponseType.RESPONSE,
         data: {
-          content: `Commands are not allowed in this channel. Allowed channels: ${this.ALLOWED_CHANNELS.map((ch) => `<#${ch}>`).join(', ')}`,
+          content: `Commands are not allowed in this channel. Allowed channels: ${this.allowedChannels.map((ch) => `<#${ch}>`).join(', ')}`,
           flags: InteractionResponseFlags.EPHEMERAL,
           allowed_mentions: allowedMentions,
         },
       }
+
     switch (action) {
       case 'use':
-        return await this.onTagUse(args)
+        return await this.tagUseExec(args)
       case 'info':
-        return await this.onTagInfo(args, interaction)
+        return await this.tagInfoExec(args, interaction)
       case 'list':
-        return await this.onTagList()
+        return await this.tagListExec()
       case 'add':
-        return await this.onTagAdd(args, interaction)
+        return await this.tagAddExec(args, interaction)
       case 'delete':
-        return await this.onTagDelete(args, interaction)
+        return await this.tagDeleteExec(args, interaction)
       case 'public':
-        return await this.onTagPublic(args, interaction)
+        return await this.tagPublicExec(args, interaction)
       case 'rename':
-        return await this.onTagEdit(args, 'rename', interaction)
+        return await this.tagEditExec(args, 'rename', interaction)
       case 'edit':
-        return await this.onTagEdit(args, 'edit', interaction)
+        return await this.tagEditExec(args, 'edit', interaction)
     }
     return void 0
   }
 
-  private async onTagUse(args: Args): Promise<IInteractionResponse> {
+  private async tagUseExec(args: Args): Promise<IInteractionResponse> {
     const { name } = args
-    const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
+    const tag = await this.tags.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
     if (tag.length === 0)
       return {
@@ -214,7 +213,7 @@ export default class TagsCommand extends BaseInteractionCommand {
         },
       }
 
-    await this.TAGS.updateOne({ name }, { $inc: { timeUsed: 1 } })
+    await this.tags.updateOne({ name }, { $inc: { timeUsed: 1 } })
     return {
       type: InteractionResponseType.RESPONSE,
       data: {
@@ -225,9 +224,9 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  private async onTagInfo(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
+  private async tagInfoExec(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
     const { name } = args
-    const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
+    const tag = await this.tags.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
     if (tag.length === 0)
       return {
@@ -264,8 +263,8 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  private async onTagList(): Promise<IInteractionResponse> {
-    const tags = await this.TAGS.find({}).toArray()
+  private async tagListExec(): Promise<IInteractionResponse> {
+    const tags = await this.tags.find({}).toArray()
 
     // todo: make it so tags will split into pages
     return {
@@ -278,7 +277,7 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  private async onTagAdd(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
+  private async tagAddExec(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
     const { name, value } = args
 
     const exists = await TagUtils.tagExists(name)
@@ -292,7 +291,7 @@ export default class TagsCommand extends BaseInteractionCommand {
         },
       }
 
-    await this.TAGS.insertOne({
+    await this.tags.insertOne({
       name: name,
       content: value!,
       ownerId: interaction.data.member!.user.id,
@@ -310,9 +309,9 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  private async onTagDelete(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
+  private async tagDeleteExec(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
     const { name } = args
-    const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
+    const tag = await this.tags.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
     if (tag.length === 0)
       return {
@@ -337,7 +336,7 @@ export default class TagsCommand extends BaseInteractionCommand {
         },
       }
 
-    await this.TAGS.deleteOne({ name })
+    await this.tags.deleteOne({ name })
     return {
       type: InteractionResponseType.RESPONSE,
       data: {
@@ -348,10 +347,10 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  private async onTagPublic(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
+  private async tagPublicExec(args: Args, interaction: Interaction): Promise<IInteractionResponse> {
     const { name, value } = args // name - name, value - true/false
 
-    const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
+    const tag = await this.tags.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
     if (tag.length === 0)
       return {
@@ -376,7 +375,7 @@ export default class TagsCommand extends BaseInteractionCommand {
         },
       }
 
-    await this.TAGS.updateOne({ name }, { $set: { public: (value === 'true') } })
+    await this.tags.updateOne({ name }, { $set: { public: (value === 'true') } })
 
     return {
       type: InteractionResponseType.RESPONSE,
@@ -388,9 +387,9 @@ export default class TagsCommand extends BaseInteractionCommand {
     }
   }
 
-  private async onTagEdit(args: Args, actionType: 'edit' | 'rename', interaction: Interaction): Promise<IInteractionResponse> {
+  private async tagEditExec(args: Args, actionType: 'edit' | 'rename', interaction: Interaction): Promise<IInteractionResponse> {
     const { name, value } = args
-    const tag = await this.TAGS.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
+    const tag = await this.tags.find({ name }).collation({ strength: 2, locale: 'en_US' }).toArray()
 
     if (tag.length === 0)
       return {
@@ -417,10 +416,10 @@ export default class TagsCommand extends BaseInteractionCommand {
 
     switch (actionType) {
       case 'edit':
-        await this.TAGS.updateOne({ name }, { $set: { content: value! } })
+        await this.tags.updateOne({ name }, { $set: { content: value! } })
         break
       case 'rename':
-        await this.TAGS.updateOne({ name }, { $set: { name: value! } })
+        await this.tags.updateOne({ name }, { $set: { name: value! } })
     }
 
     return {

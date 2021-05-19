@@ -9,6 +9,8 @@ import ModuleHandler from './Handlers/Modules/ModuleHandler'
 import bot from './index'
 import getFiles = FileSystemUtils.getFiles
 import logSuccess = Logger.logSuccess
+import DiscordUtils from './Utils/Discord'
+import capitalizeString = DiscordUtils.capitalizeString
 
 export default class Bot {
   private static instance: Bot
@@ -54,7 +56,7 @@ export default class Bot {
     for await (const file of getFiles(join(__dirname, './Commands'))) {
       const cmd = await import(file)
       const instance = CommandHandler.register(cmd.default)
-      logSuccess(`${instance.data.name} was loaded!`)
+      logSuccess(`[C] ${capitalizeString(instance.data.name)} was loaded!`)
     }
     await CommandHandler.updateInfo(ConfigService.config.guild)
   }
@@ -64,7 +66,7 @@ export default class Bot {
       const mdl = await import(file)
       const instance = ModuleHandler.register(mdl.default)
       instance.run(bot.client)
-      logSuccess(`${instance.data.name} was loaded!`)
+      logSuccess(`[M] ${instance.data.name} was loaded!`)
     }
   }
 }
