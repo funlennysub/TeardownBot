@@ -231,7 +231,7 @@ export default class ReminderCommand extends BaseInteractionCommand {
       description: reminder.text,
       fields: [
         { name: 'Reminder Channel', value: `<#${reminder.channel}>`, inline: true },
-        { name: 'Will be reminded on', value: new Date(Date.now() + reminder.time).toUTCString(), inline: true },
+        { name: 'Will be reminded on', value: new Date(reminder.time).toUTCString(), inline: true },
       ],
     }
 
