@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{435C4158-C87F-11EB-B8BC-0242AC130003}") = "TeardownBot", "TeardownBot\TeardownBot.csproj", "{B3C46191-08E7-4F1B-A55D-B1583DB0631B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B3C46191-08E7-4F1B-A55D-B1583DB0631B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3C46191-08E7-4F1B-A55D-B1583DB0631B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3C46191-08E7-4F1B-A55D-B1583DB0631B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3C46191-08E7-4F1B-A55D-B1583DB0631B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
