@@ -21,6 +21,12 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       private readonly DiscordClient _discordClient;
       private readonly IMongoCollection<TagsCollection> _tagsCollection;
 
+      private enum ActionTypes
+      {
+        Edit,
+        Rename
+      };
+
       public Group(IMongoConnection mongoConnection, DiscordClient discordClient)
       {
         _discordClient = discordClient;
@@ -201,7 +207,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "New tag name")] string value)
       {
-        await EditTag(name, value, ctx, "rename");
+        await EditTag(name, value, ctx, ActionTypes.Rename);
         var msg = new DiscordInteractionResponseBuilder()
           .WithContent($"Tag `{name}` has been updated.");
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, msg);
@@ -212,7 +218,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "New tag description")] string value)
       {
-        await EditTag(name, value, ctx, "edit");
+        await EditTag(name, value, ctx, ActionTypes.Edit);
         var msg = new DiscordInteractionResponseBuilder()
           .WithContent($"Tag `{name}` has been updated.");
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, msg);
@@ -223,7 +229,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         return guild.Members.FirstOrDefault(m => m.Value.Id == id).Value;
       }
 
-      private async Task EditTag(string name, string value, InteractionContext ctx, string actionType)
+      private async Task EditTag(string name, string value, InteractionContext ctx, ActionTypes actionType)
       {
         var tag = await _tagsCollection
           .AsQueryable()
@@ -255,14 +261,16 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         UpdateDefinition<TagsCollection>? update;
         switch (actionType)
         {
-          case "edit":
+          case ActionTypes.Edit:
             update = Builders<TagsCollection>.Update.Set("content", value);
             await _tagsCollection.FindOneAndUpdateAsync(filter, update);
             break;
-          case "rename":
+          case ActionTypes.Rename:
             update = Builders<TagsCollection>.Update.Set("name", value);
             await _tagsCollection.FindOneAndUpdateAsync(filter, update);
             break;
+          default:
+            throw new ArgumentOutOfRangeException(nameof(actionType), actionType, null);
         }
       }
     }
