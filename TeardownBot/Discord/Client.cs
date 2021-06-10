@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DSharpPlus;
-using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity.Extensions;
-using Microsoft.Extensions.Logging;
+using TeardownBot.Discord.Events;
 
 namespace TeardownBot.Discord
 {
@@ -23,14 +22,8 @@ namespace TeardownBot.Discord
       await new CommandHandler(_serviceProvider, DiscordClient).InitializeAsync();
       DiscordClient.UseInteractivity();
       await DiscordClient.ConnectAsync();
-
-      DiscordClient.Ready += Client_Ready;
-    }
-
-    private Task Client_Ready(DiscordClient sender, ReadyEventArgs e)
-    {
-      sender.Logger.LogInformation(Program.BotEventId, $"{sender.CurrentUser.Username} is ready!");
-      return Task.CompletedTask;
+      
+      var _ = new DiscordEventHandler(DiscordClient);
     }
   }
 }
