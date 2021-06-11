@@ -29,7 +29,7 @@ namespace TeardownBot.Discord.SlashCommands.Docs
       [Choice("experimental", "exp")]
       [Option("branch", "Experimental or stable game version")] string branch)
     {
-      if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+      if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
       {
         var guild = ctx.Guild;
         var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);

@@ -37,7 +37,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       public async Task Use(InteractionContext ctx,
         [Option("name", "Tag name")] string name)
       {
-        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
           var guild = ctx.Guild;
           var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
@@ -72,7 +72,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       public async Task Info(InteractionContext ctx,
         [Option("name", "Tag name")] string name)
       {
-        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
           var guild = ctx.Guild;
           var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
@@ -116,7 +116,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       [SlashCommand("list", "List all tags")]
       public async Task List(InteractionContext ctx)
       {
-        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
           var guild = ctx.Guild;
           var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
@@ -140,7 +140,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "Tag description")] string value)
       {
-        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
           var guild = ctx.Guild;
           var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
@@ -172,7 +172,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       public async Task Delete(InteractionContext ctx,
         [Option("name", "Tag name")] string name)
       {
-        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
           var guild = ctx.Guild;
           var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
@@ -222,7 +222,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Choice("private", "false")]
         [Option("value", "Make public or private")] string value)
       {
-        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
           var guild = ctx.Guild;
           var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
@@ -273,7 +273,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "New tag name")] string value)
       {
-        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
           var guild = ctx.Guild;
           var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
@@ -295,7 +295,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "New tag description")] string value)
       {
-        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
           var guild = ctx.Guild;
           var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
