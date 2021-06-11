@@ -29,7 +29,16 @@ namespace TeardownBot.Discord.SlashCommands.Docs
       [Choice("experimental", "exp")]
       [Option("branch", "Experimental or stable game version")] string branch)
     {
-      await Constants.CheckChannel(ctx);
+      if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+      {
+        var guild = ctx.Guild;
+        var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
+        var errMsg = new DiscordInteractionResponseBuilder()
+          .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
+          .AsEphemeral(true);
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+        return;
+      }
 
       var url = DocsUrl.Replace("$branch$", branch);
       var httpClient = new HttpClient();
@@ -38,7 +47,6 @@ namespace TeardownBot.Discord.SlashCommands.Docs
       var docs = await JsonSerializer.DeserializeAsync<DocsTypes>(stream, _options);
 
       if (docs is null) throw new NullReferenceException("There was an error while trying to get docs");
-      Console.WriteLine(docs.version);
 
       var (cat, func) = FindDoc(name, docs);
 

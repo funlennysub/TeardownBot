@@ -37,8 +37,17 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       public async Task Use(InteractionContext ctx,
         [Option("name", "Tag name")] string name)
       {
-        await Constants.CheckChannel(ctx);
-        
+        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        {
+          var guild = ctx.Guild;
+          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
+          var errMsg = new DiscordInteractionResponseBuilder()
+            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
+            .AsEphemeral(true);
+          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          return;
+        }
+
         var filter = Builders<TagsCollection>.Filter.Eq("name", name);
         var tag = await _tagsCollection
           .AsQueryable()
@@ -63,7 +72,16 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       public async Task Info(InteractionContext ctx,
         [Option("name", "Tag name")] string name)
       {
-        await Constants.CheckChannel(ctx);
+        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        {
+          var guild = ctx.Guild;
+          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
+          var errMsg = new DiscordInteractionResponseBuilder()
+            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
+            .AsEphemeral(true);
+          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          return;
+        }
 
         var tag = await _tagsCollection
           .AsQueryable()
@@ -98,7 +116,16 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       [SlashCommand("list", "List all tags")]
       public async Task List(InteractionContext ctx)
       {
-        await Constants.CheckChannel(ctx);
+        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        {
+          var guild = ctx.Guild;
+          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
+          var errMsg = new DiscordInteractionResponseBuilder()
+            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
+            .AsEphemeral(true);
+          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          return;
+        }
 
         var tags = _tagsCollection.AsQueryable().Where(_ => true).ToList();
         var tagNames = tags.Select(tag => $"`{tag.name}`");
@@ -113,7 +140,16 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "Tag description")] string value)
       {
-        await Constants.CheckChannel(ctx);
+        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        {
+          var guild = ctx.Guild;
+          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
+          var errMsg = new DiscordInteractionResponseBuilder()
+            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
+            .AsEphemeral(true);
+          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          return;
+        }
 
         var tag = await _tagsCollection
           .AsQueryable()
@@ -136,7 +172,16 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       public async Task Delete(InteractionContext ctx,
         [Option("name", "Tag name")] string name)
       {
-        await Constants.CheckChannel(ctx);
+        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        {
+          var guild = ctx.Guild;
+          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
+          var errMsg = new DiscordInteractionResponseBuilder()
+            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
+            .AsEphemeral(true);
+          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          return;
+        }
 
         var tag = await _tagsCollection
           .AsQueryable()
@@ -177,7 +222,16 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Choice("private", "false")]
         [Option("value", "Make public or private")] string value)
       {
-        await Constants.CheckChannel(ctx);
+        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        {
+          var guild = ctx.Guild;
+          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
+          var errMsg = new DiscordInteractionResponseBuilder()
+            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
+            .AsEphemeral(true);
+          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          return;
+        }
 
         var tag = await _tagsCollection
           .AsQueryable()
@@ -219,7 +273,16 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "New tag name")] string value)
       {
-        await Constants.CheckChannel(ctx);
+        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        {
+          var guild = ctx.Guild;
+          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
+          var errMsg = new DiscordInteractionResponseBuilder()
+            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
+            .AsEphemeral(true);
+          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          return;
+        }
 
         await EditTag(name, value, ctx, ActionTypes.Rename);
         var msg = new DiscordInteractionResponseBuilder()
@@ -232,7 +295,16 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "New tag description")] string value)
       {
-        await Constants.CheckChannel(ctx);
+        if (Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
+        {
+          var guild = ctx.Guild;
+          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
+          var errMsg = new DiscordInteractionResponseBuilder()
+            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
+            .AsEphemeral(true);
+          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          return;
+        }
 
         await EditTag(name, value, ctx, ActionTypes.Edit);
         var msg = new DiscordInteractionResponseBuilder()
