@@ -17,7 +17,7 @@ namespace TeardownBot.Discord.Events
     {
       SuggestionsChannel = Environment.GetCommandLineArgs()[1] == "false" ? 760130786963095553ul : 806440595891290142ul;
       discordClient.Ready += OnReady;
-      discordClient.MessageCreated += MessageCreate;
+      discordClient.MessageCreated += OnMessageCreate;
     }
 
     private Task OnReady(DiscordClient s, ReadyEventArgs e)
@@ -26,7 +26,7 @@ namespace TeardownBot.Discord.Events
       return Task.CompletedTask;
     }
 
-    private Task MessageCreate(DiscordClient s, MessageCreateEventArgs e)
+    private Task OnMessageCreate(DiscordClient s, MessageCreateEventArgs e)
     {
       if (e.Guild is null) return Task.CompletedTask;
 

@@ -5,7 +5,7 @@ namespace TeardownBot.Mongo.Collections
   public class TagsCollection
   {
     public ObjectId _id { get; set; }
-    public string ownerId { get; set; }
+    public long ownerId { get; set; }
     public string name { get; set; }
     public string content { get; set; }
     public bool @public { get; set; }
@@ -15,7 +15,7 @@ namespace TeardownBot.Mongo.Collections
     {
     }
 
-    public TagsCollection(string name, string content, string ownerId)
+    public TagsCollection(string name, string content, long ownerId)
     {
       this.ownerId = ownerId;
       this.name = name;

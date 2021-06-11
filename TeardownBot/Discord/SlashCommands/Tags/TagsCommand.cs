@@ -73,7 +73,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
           return;
         }
 
-        var tagOwner = GetTagOwner(ctx.Guild, UInt64.Parse(tag.ownerId));
+        var tagOwner = GetTagOwner(ctx.Guild, (ulong) tag.ownerId);
 
         var msg = new DiscordInteractionResponseBuilder();
         var embed = new DiscordEmbedBuilder();
@@ -118,7 +118,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
           return;
         }
 
-        await _tagsCollection.InsertOneAsync(new TagsCollection(name, value, ctx.Member.Id.ToString()));
+        await _tagsCollection.InsertOneAsync(new TagsCollection(name, value, (long) ctx.Member.Id));
 
         var msg = new DiscordInteractionResponseBuilder().WithContent($"Tag `{name}` has been created.");
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, msg);
@@ -142,7 +142,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
           return;
         }
 
-        var tagOwner = GetTagOwner(ctx.Guild, UInt64.Parse(tag.ownerId));
+        var tagOwner = GetTagOwner(ctx.Guild, (ulong) tag.ownerId);
         if (Convert.ToUInt64(tag.ownerId) != ctx.Member.Id)
         {
           var errMsg = new DiscordInteractionResponseBuilder()
@@ -181,7 +181,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
           return;
         }
 
-        var tagOwner = GetTagOwner(ctx.Guild, UInt64.Parse(tag.ownerId));
+        var tagOwner = GetTagOwner(ctx.Guild, (ulong) tag.ownerId);
 
         if (tagOwner.Id != ctx.Member.Id)
         {
@@ -245,9 +245,9 @@ namespace TeardownBot.Discord.SlashCommands.Tags
           return;
         }
 
-        var tagOwner = GetTagOwner(ctx.Guild, UInt64.Parse(tag.ownerId));
+        var tagOwner = GetTagOwner(ctx.Guild, (ulong) tag.ownerId);
 
-        if (!tag.@public && UInt64.Parse(tag.ownerId) != ctx.Member.Id)
+        if (!tag.@public && (ulong) tag.ownerId != ctx.Member.Id)
         {
           var errMsg = new DiscordInteractionResponseBuilder()
             .WithContent(
