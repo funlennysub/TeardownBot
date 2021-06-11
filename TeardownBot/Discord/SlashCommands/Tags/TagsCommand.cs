@@ -37,6 +37,8 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       public async Task Use(InteractionContext ctx,
         [Option("name", "Tag name")] string name)
       {
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id)) return;
+        
         var filter = Builders<TagsCollection>.Filter.Eq("name", name);
         var tag = await _tagsCollection
           .AsQueryable()
@@ -61,6 +63,8 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       public async Task Info(InteractionContext ctx,
         [Option("name", "Tag name")] string name)
       {
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id)) return;
+        
         var tag = await _tagsCollection
           .AsQueryable()
           .Where(t => t.name.ToLower() == name.ToLower())
@@ -94,6 +98,8 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       [SlashCommand("list", "List all tags")]
       public async Task List(InteractionContext ctx)
       {
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id)) return;
+
         var tags = _tagsCollection.AsQueryable().Where(_ => true).ToList();
         var tagNames = tags.Select(tag => $"`{tag.name}`");
 
@@ -107,6 +113,8 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "Tag description")] string value)
       {
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id)) return;
+
         var tag = await _tagsCollection
           .AsQueryable()
           .Where(t => t.name.ToLower() == name.ToLower())
@@ -128,6 +136,8 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       public async Task Delete(InteractionContext ctx,
         [Option("name", "Tag name")] string name)
       {
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id)) return;
+
         var tag = await _tagsCollection
           .AsQueryable()
           .Where(t => t.name.ToLower() == name.ToLower())
@@ -167,6 +177,8 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Choice("private", "false")]
         [Option("value", "Make public or private")] string value)
       {
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id)) return;
+
         var tag = await _tagsCollection
           .AsQueryable()
           .Where(t => t.name.ToLower() == name.ToLower())
@@ -207,6 +219,8 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "New tag name")] string value)
       {
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id)) return;
+
         await EditTag(name, value, ctx, ActionTypes.Rename);
         var msg = new DiscordInteractionResponseBuilder()
           .WithContent($"Tag `{name}` has been updated.");
@@ -218,6 +232,8 @@ namespace TeardownBot.Discord.SlashCommands.Tags
         [Option("name", "Tag name")] string name,
         [Option("value", "New tag description")] string value)
       {
+        if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id)) return;
+
         await EditTag(name, value, ctx, ActionTypes.Edit);
         var msg = new DiscordInteractionResponseBuilder()
           .WithContent($"Tag `{name}` has been updated.");

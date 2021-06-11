@@ -15,7 +15,7 @@ namespace TeardownBot.Discord.Events
 
     public DiscordEventHandler(DiscordClient discordClient)
     {
-      SuggestionsChannel = Environment.GetCommandLineArgs()[1] == "false" ? 760130786963095553ul : 806440595891290142ul;
+      SuggestionsChannel = 760130786963095553ul;
       discordClient.Ready += OnReady;
       discordClient.MessageCreated += OnMessageCreate;
     }

@@ -29,6 +29,8 @@ namespace TeardownBot.Discord.SlashCommands.Docs
       [Choice("experimental", "exp")]
       [Option("branch", "Experimental or stable game version")] string branch)
     {
+      if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id)) return;
+
       var url = DocsUrl.Replace("$branch$", branch);
       var httpClient = new HttpClient();
       var resp = await httpClient.GetAsync(url);
