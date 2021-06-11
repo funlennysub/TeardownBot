@@ -18,9 +18,9 @@ namespace TeardownBot
 
     public static async Task Main(string[] args)
     {
-      if (args.Length < 1)
+      if (args.Length < 2)
       {
-        await Console.Error.WriteLineAsync("Config file path is not specified");
+        await Console.Error.WriteLineAsync("Invalid arguments.\nUsage: [CONFIG_FILE_PATH] [TRUE/FALSE]. false - prod, true - dev");
         return;
       }
 
@@ -42,7 +42,6 @@ namespace TeardownBot
 
     private async Task RunBotAsync(string[] args)
     {
-      Console.WriteLine(args[1] == "false");
       var config = new DiscordConfiguration
       {
         // false - prod, true - dev

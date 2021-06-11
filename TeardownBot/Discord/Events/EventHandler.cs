@@ -11,10 +11,11 @@ namespace TeardownBot.Discord.Events
   {
     private const string Thumbsup = "👍";
     private const string Thumbsdown = "👎";
-    private const ulong SuggestionsChannel = 806440595891290142;
+    private ulong SuggestionsChannel { get; }
 
     public DiscordEventHandler(DiscordClient discordClient)
     {
+      SuggestionsChannel = Environment.GetCommandLineArgs()[1] == "false" ? 760130786963095553ul : 806440595891290142ul;
       discordClient.Ready += OnReady;
       discordClient.MessageCreated += MessageCreate;
     }
