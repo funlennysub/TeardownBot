@@ -373,6 +373,9 @@ FodyWeavers.xsd
 # User-specific stuff
 .idea/**/discord.xml
 .idea/**/dataSources.xml
+.idea/**/webServers.xml
+.idea/**/sshConfigs.xml
+.idea/**/deployment.xml
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
