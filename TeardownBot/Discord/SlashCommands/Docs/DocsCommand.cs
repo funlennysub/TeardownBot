@@ -32,7 +32,7 @@ namespace TeardownBot.Discord.SlashCommands.Docs
       if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
       {
         var guild = ctx.Guild;
-        var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Name);
+        var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Mention);
         var errMsg = new DiscordInteractionResponseBuilder()
           .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
           .AsEphemeral(true);
