@@ -11,6 +11,8 @@
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0-nightly-00879" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0-nightly-00879" />
     <PackageReference Include="IDoEverything.DSharpPlus.SlashCommands" Version="1.4.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.10.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="3.10.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.13.0-beta1" />
   </ItemGroup>
 
