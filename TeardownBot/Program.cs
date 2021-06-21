@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TeardownBot.Config;
 using TeardownBot.Discord;
+using TeardownBot.Discord.SlashCommands.Docs;
 using TeardownBot.Mongo;
 
 namespace TeardownBot
@@ -15,25 +18,56 @@ namespace TeardownBot
   internal class Program
   {
     public static readonly EventId BotEventId = new(0, "Teardown-bot");
+    public static readonly Dictionary<string, DocsTypes> Docs = new();
 
-    public static async Task Main(string[] args)
+    private static readonly JsonSerializerOptions Options = new()
     {
-      if (args.Length < 2)
-      {
-        await Console.Error.WriteLineAsync("Invalid arguments.\nUsage: [CONFIG_FILE_PATH] [TRUE/FALSE]. false - prod, true - dev");
-        return;
-      }
+      IncludeFields = true
+    };
 
+    private static string DocsUrl =>
+      "https://raw.githubusercontent.com/funlennysub/teardown-api-docs-json/latest/%BRANCH%_api.json";
+
+    private static async Task<ConfigFile> ReadConfig(string[] args)
+    {
       await using var fs = File.OpenRead(args[0]);
       using var sr = new StreamReader(fs, new UTF8Encoding(false));
       var json = await sr.ReadToEndAsync();
 
       var content = JsonSerializer.Deserialize<ConfigFile>(json);
-      if (content is null)
+      if (content is not null) return content;
+      throw new InvalidOperationException("Something is wrong");
+    }
+
+    private static async Task<DocsTypes> ReadDocs(string branch)
+    {
+      var httpClient = new HttpClient();
+      var resp = await httpClient.GetAsync(DocsUrl.Replace("%BRANCH%", branch));
+      var stream = await resp.Content.ReadAsStreamAsync();
+      var docs = await JsonSerializer.DeserializeAsync<DocsTypes>(stream, Options);
+
+      if (docs is null) throw new NullReferenceException("There was an error while trying to get docs");
+
+      return docs;
+    }
+
+    public static async Task WriteDocs()
+    {
+      Docs["stable"] = await ReadDocs("stable");
+      Docs["exp"] =  await ReadDocs("exp");
+    }
+
+    public static async Task Main(string[] args)
+    {
+      if (args.Length < 2)
       {
-        await Console.Error.WriteLineAsync("Something is wrong");
+        await Console.Error.WriteLineAsync(
+          "Invalid arguments.\nUsage: [CONFIG_FILE_PATH] [TRUE/FALSE]. false - prod, true - dev");
         return;
       }
+
+      var content = await ReadConfig(args);
+      await WriteDocs();
 
       ConfigFile.Current = content;
 

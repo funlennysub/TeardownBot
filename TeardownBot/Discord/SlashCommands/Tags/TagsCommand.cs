@@ -39,12 +39,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       {
         if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
-          var guild = ctx.Guild;
-          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Mention);
-          var errMsg = new DiscordInteractionResponseBuilder()
-            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
-            .AsEphemeral(true);
-          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          await DiscordExtensions.SendInvalidChannelError(ctx);
           return;
         }
 
@@ -74,12 +69,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       {
         if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
-          var guild = ctx.Guild;
-          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Mention);
-          var errMsg = new DiscordInteractionResponseBuilder()
-            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
-            .AsEphemeral(true);
-          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          await DiscordExtensions.SendInvalidChannelError(ctx);
           return;
         }
 
@@ -118,12 +108,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       {
         if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
-          var guild = ctx.Guild;
-          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Mention);
-          var errMsg = new DiscordInteractionResponseBuilder()
-            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
-            .AsEphemeral(true);
-          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          await DiscordExtensions.SendInvalidChannelError(ctx);
           return;
         }
 
@@ -142,12 +127,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       {
         if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
-          var guild = ctx.Guild;
-          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Mention);
-          var errMsg = new DiscordInteractionResponseBuilder()
-            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
-            .AsEphemeral(true);
-          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          await DiscordExtensions.SendInvalidChannelError(ctx);
           return;
         }
 
@@ -174,12 +154,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       {
         if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
-          var guild = ctx.Guild;
-          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Mention);
-          var errMsg = new DiscordInteractionResponseBuilder()
-            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
-            .AsEphemeral(true);
-          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          await DiscordExtensions.SendInvalidChannelError(ctx);
           return;
         }
 
@@ -224,12 +199,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       {
         if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
-          var guild = ctx.Guild;
-          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Mention);
-          var errMsg = new DiscordInteractionResponseBuilder()
-            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
-            .AsEphemeral(true);
-          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          await DiscordExtensions.SendInvalidChannelError(ctx);
           return;
         }
 
@@ -275,12 +245,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       {
         if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
-          var guild = ctx.Guild;
-          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Mention);
-          var errMsg = new DiscordInteractionResponseBuilder()
-            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
-            .AsEphemeral(true);
-          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          await DiscordExtensions.SendInvalidChannelError(ctx);
           return;
         }
 
@@ -297,12 +262,7 @@ namespace TeardownBot.Discord.SlashCommands.Tags
       {
         if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
         {
-          var guild = ctx.Guild;
-          var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Mention);
-          var errMsg = new DiscordInteractionResponseBuilder()
-            .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
-            .AsEphemeral(true);
-          await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+          await DiscordExtensions.SendInvalidChannelError(ctx);
           return;
         }
 

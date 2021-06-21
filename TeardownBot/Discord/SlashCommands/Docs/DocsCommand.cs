@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -19,9 +18,6 @@ namespace TeardownBot.Discord.SlashCommands.Docs
       IncludeFields = true
     };
 
-    private const string DocsUrl =
-      "https://raw.githubusercontent.com/funlennysub/teardown-api-docs-json/latest/$branch$_api.json";
-
     [SlashCommand("docs", "Teardown LUA API documentation")]
     public async Task Docs(InteractionContext ctx,
       [Option("name", "function name")] string name,
@@ -31,20 +27,11 @@ namespace TeardownBot.Discord.SlashCommands.Docs
     {
       if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
       {
-        var guild = ctx.Guild;
-        var channels = Constants.AllowedChannels.Select(ch => guild.Channels.FirstOrDefault(r => r.Value.Id == ch).Value.Mention);
-        var errMsg = new DiscordInteractionResponseBuilder()
-          .WithContent($"You can only use this command in allowed channels, such as: {String.Join(", ", channels)}")
-          .AsEphemeral(true);
-        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
+        await DiscordExtensions.SendInvalidChannelError(ctx);
         return;
       }
-
-      var url = DocsUrl.Replace("$branch$", branch);
-      var httpClient = new HttpClient();
-      var resp = await httpClient.GetAsync(url);
-      var stream = await resp.Content.ReadAsStreamAsync();
-      var docs = await JsonSerializer.DeserializeAsync<DocsTypes>(stream, _options);
+      
+      var docs = Program.Docs[branch];
 
       if (docs is null) throw new NullReferenceException("There was an error while trying to get docs");
 
