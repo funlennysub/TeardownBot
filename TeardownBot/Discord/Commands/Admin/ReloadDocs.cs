@@ -6,7 +6,7 @@ namespace TeardownBot.Discord.Commands.Admin
 {
   public class ReloadDocs : BaseCommandModule
   {
-    [Command("reloaddocs"), Aliases("rd"), Hidden, RequireOwner]
+    [Command("reloaddocs"), Aliases("rd", "reload"), Hidden, RequireOwner]
     public async Task Reload(CommandContext ctx)
     {
       await Program.WriteDocs();
