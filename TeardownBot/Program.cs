@@ -17,7 +17,7 @@ namespace TeardownBot
 {
   internal class Program
   {
-    public static readonly EventId BotEventId = new(0, "Teardown-bot");
+    public static readonly EventId BotEventId = new(0, "TeardownBot");
     public static readonly Dictionary<string, DocsTypes> Docs = new();
 
     private static readonly JsonSerializerOptions Options = new()
