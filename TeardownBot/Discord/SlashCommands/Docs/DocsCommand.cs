@@ -55,7 +55,7 @@ namespace TeardownBot.Discord.SlashCommands.Docs
 
       var embed = new DiscordEmbedBuilder();
       embed.WithTitle($"#{funcName}");
-      embed.WithUrl($"{baseUrl}/{funcName}");
+      embed.WithUrl($"{baseUrl}#{funcName}");
       embed.WithDescription($"`{definition}`\n\n{info}");
       embed.AddField("Arguments", argsFormatted);
       embed.AddField("Returns", returnsFormatted);
