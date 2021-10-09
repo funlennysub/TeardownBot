@@ -2,56 +2,55 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
-using TeardownBot.Utils;
+using TeardownBot.Discord.Attributes;
+using TeardownBot.Extensions;
+using TeardownBot.GameDocs;
 
 namespace TeardownBot.Discord.SlashCommands.Docs
 {
-  public class DocsCommand : SlashCommandModule
+  public class DocsCommand : ApplicationCommandModule
   {
-    private readonly JsonSerializerOptions _options = new()
-    {
-      IncludeFields = true
-    };
+    private readonly DiscordClient _client;
+    private readonly TeardownBot.GameDocs.Docs _docs;
 
+    public DocsCommand(DiscordClient client, TeardownBot.GameDocs.Docs docs)
+    {
+      this._client = client;
+      this._docs = docs;
+    }
+
+    [SlashRequiredChannels(806440595891290142, 768940642767208468, 780106606456733727)]
     [SlashCommand("docs", "Teardown LUA API documentation")]
     public async Task Docs(InteractionContext ctx,
-      [Option("name", "function name")] string name,
-      [Choice("stable", "stable")]
-      [Choice("experimental", "exp")]
-      [Option("branch", "Experimental or stable game version")] string branch)
+      [Option("name", "Function name")] string name,
+      [Option("version", "Experimental or stable game version")]
+      Versions version)
     {
-      if (!Array.Exists(Constants.AllowedChannels, ch => ch == ctx.Channel.Id))
-      {
-        await DiscordExtensions.SendInvalidChannelError(ctx);
-        return;
-      }
+      var doc = this._docs.DocsDictionary[version.GetEnumDescription()];
       
-      var docs = Program.Docs[branch];
+      if (doc is null) throw new NullReferenceException("There was an error while trying to get docs");
 
-      if (docs is null) throw new NullReferenceException("There was an error while trying to get docs");
-
-      var (cat, func) = FindDoc(name, docs);
+      var (cat, func) = FindDoc(name, doc);
 
       if (cat is null && func is null)
       {
         var errMsg = new DiscordInteractionResponseBuilder()
-          .WithContent($"Function {DiscordExtensions.ClearString(name)} not found.");
+          .WithContent($"Function `{name}` not found.");
         await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, errMsg);
         return;
       }
 
-      var baseUrl = docs.baseURL;
-      var funcName = func.name;
-      var argsFormatted = FormatApiInputsAndOutputs(func.arguments);
-      var returnsFormatted = FormatApiInputsAndOutputs(func.@return);
-      var info = func.info;
-      var definition = func.def;
-      var example = $"```lua\n{func.example}\n```";
+      var baseUrl = doc.BaseUrl;
+      var funcName = func!.Name;
+      var argsFormatted = FormatApiInputsAndOutputs(func.Arguments);
+      var returnsFormatted = FormatApiInputsAndOutputs(func.Return);
+      var info = func.Info;
+      var definition = func.Def;
+      var example = $"```lua\n{func.Example}\n```";
 
       var embed = new DiscordEmbedBuilder();
       embed.WithTitle($"#{funcName}");
@@ -60,35 +59,35 @@ namespace TeardownBot.Discord.SlashCommands.Docs
       embed.AddField("Arguments", argsFormatted);
       embed.AddField("Returns", returnsFormatted);
       embed.AddField("Example", example);
-      embed.WithFooter($"API(game) Version: {docs.version}");
+      embed.WithFooter($"API(game) Version: {doc.Version}");
       embed.WithColor(new DiscordColor(0xf0d080));
 
       var msg = new DiscordInteractionResponseBuilder()
-        .WithContent($"{baseUrl}/{funcName}")
+        .WithContent($"{baseUrl}#{funcName}")
         .AddEmbed(embed.Build());
 
       await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, msg);
     }
 
-    private (Category?, ApiFunction?) FindDoc(string name, DocsTypes docs)
+    private (Api?, Function?) FindDoc(string name, DocsTypes docs)
     {
-      var (category, apiFunction) = docs.api
-        .SelectMany(cat => cat.functions, (cat, func) => new {cat, func})
-        .Where(t => string.Equals(t.func.name, name, StringComparison.InvariantCultureIgnoreCase))
+      var (category, apiFunction) = docs.Api
+        .SelectMany(cat => cat.Functions, (cat, func) => new { cat, func })
+        .Where(t => string.Equals(t.func.Name, name, StringComparison.InvariantCultureIgnoreCase))
         .Select(t => (t.cat, t.func)).FirstOrDefault();
       return category is null && apiFunction is null
         ? (null, null)
         : (cat: category, func: apiFunction);
     }
 
-    private string FormatApiInputsAndOutputs(IReadOnlyCollection<ChingChengHanji> arguments)
+    private string FormatApiInputsAndOutputs(IReadOnlyCollection<Param> arguments)
     {
       StringBuilder res = new();
       if (arguments.Count < 1) return res.Append("none").ToString();
 
       foreach (var arg in arguments)
         res.AppendLine(
-          $"`{arg.name}` ({(arg.optional is true ? $"{arg.type}, optional" : arg.type)}) - {arg.desc.Replace("&ndash; ", "")}");
+          $"`{arg.Name}` ({(arg.Optional is true ? $"{arg.Type}, optional" : arg.Type)}) - {arg.Desc.Replace("&ndash; ", "")}");
 
       return res.ToString();
     }

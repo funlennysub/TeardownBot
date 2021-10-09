@@ -1,0 +1,30 @@
+﻿version: '3.8'
+services:
+  teardown:
+    container_name: teardown-bot
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: teardown-bot:latest
+    profiles:
+      - bot
+    networks:
+      - teardown_mongo_network
+
+  teardown-mongo:
+    container_name: teardown-mongodb
+    restart: always
+    image: mongo:4-bionic
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./db-data:/data/db
+    profiles:
+      - bot
+    networks:
+      - teardown_mongo_network
+
+networks:
+  teardown_mongo_network:
+    name: teardown_mongo_network
