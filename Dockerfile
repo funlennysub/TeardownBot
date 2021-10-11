@@ -1,20 +1,19 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:5.0-alpine AS base
-WORKDIR /app
-
+﻿# Built it
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
-WORKDIR /src
-COPY TeardownBot/TeardownBot.csproj TeardownBot/
-COPY TeardownBot/NuGet.Config .
-RUN dotnet restore "TeardownBot/TeardownBot.csproj"
-COPY . .
-WORKDIR "/src/TeardownBot"
-RUN dotnet build "TeardownBot.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "TeardownBot.csproj" -c Release -o /app/publish
+WORKDIR /Bot
+COPY . ./
+RUN dotnet restore
 
-FROM base AS final
-COPY config.json /app
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "TeardownBot.dll"]
+RUN dotnet publish ./TeardownBot/TeardownBot.csproj -c Release -o out
+
+# Run it
+FROM mcr.microsoft.com/dotnet/runtime:5.0-alpine
+
+WORKDIR /Bot
+COPY config.json .
+COPY --from=build /Bot/out .
+
+RUN chmod +x ./TeardownBot
+
+CMD ["./TeardownBot"]
